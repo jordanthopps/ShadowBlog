@@ -37,7 +37,7 @@ namespace ShadowBlog.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        [BindProperty] //means bound to the page.
+        [BindProperty] //means bound to the page
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
