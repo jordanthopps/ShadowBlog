@@ -10,7 +10,7 @@ namespace ShadowBlog.Models
 {
     public class BlogUser : IdentityUser //BlogUser now has all of the properties IdentityUser has.
     {
-        //What's needed at this point are other the properties I want like...
+        //What's needed at this point are other properties I want like...
 
         [Required]
         [Display(Name = "First Name")]
