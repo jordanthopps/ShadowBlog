@@ -22,6 +22,7 @@ namespace ShadowBlog.Models
         public ICollection<BlogPost> BlogPosts = new HashSet<BlogPost>();
         //ICollection means it's a generic collection that could be satisfied with any data type.
         //A hashset is a datastructure used to satisfy an ICollection.
+        //new is used to create an instance of a class. 
     }
 
 
