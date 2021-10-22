@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity; //white means a class is using it.
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity; //white means a class is using it.
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,6 +31,10 @@ namespace ShadowBlog.Models
         [StringLength(60, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long,", MinimumLength = 2)]
         public string DisplayName { get; set; }
 
+        //This represents the byte data not the physical file
+        public byte[] ImageData { get; set; }
+        public string ImageType { get; set; }
+
         [NotMapped]
         public string FullName //a derived property (from FirstName and LastName).
         {
@@ -38,6 +43,9 @@ namespace ShadowBlog.Models
                 return $"{FirstName} {LastName}"; //string interpolation.
             }
         }
+
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
 
     }
 }
