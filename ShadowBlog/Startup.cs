@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using ShadowBlog.Data;
 using ShadowBlog.Models;
 using ShadowBlog.Services;
+using ShadowBlog.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,8 @@ namespace ShadowBlog
 
             //Registration of DataService.cs
             services.AddTransient<DataService>();
+            //Registration of BasicImageService.cs as the concrete class to be used by IImageService
+            services.AddScoped<IImageService, BasicImageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

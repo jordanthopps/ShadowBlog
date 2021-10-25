@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShadowBlog.Data;
 using ShadowBlog.Models;
+using ShadowBlog.Services.Interfaces;
 
 namespace ShadowBlog.Controllers
 {
     public class BlogsController : Controller
     {
         private readonly ApplicationDbContext _context; //Class member
+        private readonly IImageService _imageService; //Class member
 
-        public BlogsController(ApplicationDbContext context) //A constructor is a special method that runs when an instance of the class is being created.
+        public BlogsController(ApplicationDbContext context, IImageService imageService) //A constructor is a special method that runs when an instance of the class is being created.
         {
             _context = context;
+            _imageService = imageService;
         }
 
         // GET: Blogs
@@ -54,12 +57,18 @@ namespace ShadowBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description")] Blog blog)
+        public async Task<IActionResult> Create([Bind("Name,Description,Image")] Blog blog)
         {
             if (ModelState.IsValid)
             {
                 //Programmatically add in the Created Date.
                 blog.Created = DateTime.Now;
+
+                if (blog.Image is not null)
+                {
+                    blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
+                    blog.ContentType = _imageService.ContentType(blog.Image);
+                }
 
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
@@ -89,7 +98,7 @@ namespace ShadowBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,ImageData,ContentType,Image")] Blog blog)
         {
             if (id != blog.Id)
             {
@@ -100,6 +109,13 @@ namespace ShadowBlog.Controllers
             {
                 try
                 {
+
+                    if (blog.Image is not null)
+                    {
+                        blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
+                        blog.ContentType = _imageService.ContentType(blog.Image);
+                    }
+
                     _context.Update(blog);
                     await _context.SaveChangesAsync();
                 }

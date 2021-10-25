@@ -27,10 +27,11 @@ namespace ShadowBlog.Models
 
         //This represents the byte data not the physical file
         public byte[] ImageData { get; set; }
-        public string ImageType { get; set; }
+        public string ContentType { get; set; }
 
         //This property represents a physical file chose by the user
         [NotMapped]
+        [DataType(DataType.Upload)]
         public IFormFile Image { get; set; }
 
         //Add a navigational property to reference all of my children
