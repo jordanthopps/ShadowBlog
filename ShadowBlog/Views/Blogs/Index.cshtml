@@ -1,4 +1,8 @@
-﻿@model IEnumerable<ShadowBlog.Models.Blog>
+﻿@using ShadowBlog.Models
+@using ShadowBlog.Services.Interfaces
+
+@inject IImageService _imageService 
+@model IEnumerable<ShadowBlog.Models.Blog>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,6 +17,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayName("Blog Image")
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
@@ -21,18 +28,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageData)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContentType)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                <img src="@_imageService.DecodeImage(item.ImageData, item.ContentType)"/>
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -41,12 +45,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageData)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContentType)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

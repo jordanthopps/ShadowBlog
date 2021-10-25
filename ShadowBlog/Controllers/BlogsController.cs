@@ -61,14 +61,21 @@ namespace ShadowBlog.Controllers
         {
             if (ModelState.IsValid)
             {
-                //Programmatically add in the Created Date.
-                blog.Created = DateTime.Now;
 
-                if (blog.Image is not null)
+                if(!_imageService.ValidImage(blog.Image))
+                {
+                    //Complain to the user and let them know to pick something else.
+                    ModelState.AddModelError("Image", "The file you chose was not valid!");
+                    return View(blog);
+                } 
+                else
                 {
                     blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
                     blog.ContentType = _imageService.ContentType(blog.Image);
                 }
+
+                //Programmatically add in the Created Date.
+                blog.Created = DateTime.Now;
 
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
