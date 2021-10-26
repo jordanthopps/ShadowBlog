@@ -1,14 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using ShadowBlog.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShadowBlog.Services
 {
     public class BasicImageService /*Class name*/ : IImageService /*Interface*/
     {
+        private readonly IConfiguration _configuration;
+
+        public BasicImageService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public async Task<byte[]> EncodeImageAsync(IFormFile file)
         {
@@ -20,17 +28,17 @@ namespace ShadowBlog.Services
             using var ms = new MemoryStream();
             await file.CopyToAsync(ms);
             return ms.ToArray();
-        }
+        } //encodes an image that a user manually selects/uploads
 
-        public async Task<byte[]> EncodeImageAsync(string fileName)
+        public async Task<byte[]> EncodeImageAsync(string fileName) 
         {
             var file = $"{Directory.GetCurrentDirectory()}/wwwroot/img/{fileName}";
             return await File.ReadAllBytesAsync(file);
-        }
+        } //encodes a file in the application (like wwwroot default images)
 
-        public string ContentType(IFormFile file)
+        public string ContentType(IFormFile file) //file extension.
         {
-            return file?.ContentType;
+            return file?.ContentType; //if available, return the extension of the file.
         }
 
         public string DecodeImage(byte[] data, string type)
@@ -39,24 +47,15 @@ namespace ShadowBlog.Services
             return $"data:image/{type};base64,{Convert.ToBase64String(data)}";
         }
 
-        private int Size(IFormFile file)
-        {
-            return Convert.ToInt32(file?.Length);
-        }
-
         public bool ValidType(IFormFile file)
         {
-            //TODO: Move the acceptable image list out to the appSettings.json file and then use IConfiguration to grab the list.
-        var acceptableTypes = new List<string>();
-            acceptableTypes.Add("jpg");
-            acceptableTypes.Add("jpeg");
-            acceptableTypes.Add("gif");
-            acceptableTypes.Add("bmp");
-            acceptableTypes.Add("png");
-
             var fileContentType = ContentType(file).Split("/")[1];
-            var position = acceptableTypes.IndexOf(fileContentType);
-            return position > 0;
+
+            var acceptableExtensions = _configuration["AppImages:AllowedExtensions"];
+            var extList = acceptableExtensions.Split(',').ToList();
+            var position = extList.IndexOf(fileContentType);
+
+            return position >= 0;
         }
 
         public bool ValidSize(IFormFile file) 
@@ -68,6 +67,11 @@ namespace ShadowBlog.Services
         public bool ValidImage(IFormFile file)
         {
             return (ValidType(file) && ValidSize(file));
+        }
+
+        private int Size(IFormFile file)
+        {
+            return Convert.ToInt32(file?.Length);
         }
     }
 }

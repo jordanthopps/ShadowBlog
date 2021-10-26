@@ -13,10 +13,10 @@ namespace ShadowBlog.Controllers
 {
     public class BlogsController : Controller
     {
-        private readonly ApplicationDbContext _context; //Class member
-        private readonly IImageService _imageService; //Class member
+        private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public BlogsController(ApplicationDbContext context, IImageService imageService) //A constructor is a special method that runs when an instance of the class is being created.
+        public BlogsController(ApplicationDbContext context, IImageService imageService)
         {
             _context = context;
             _imageService = imageService;
@@ -61,20 +61,26 @@ namespace ShadowBlog.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                if(!_imageService.ValidImage(blog.Image))
+                if (blog.Image is null)
                 {
-                    //Complain to the user and let them know to pick something else.
-                    ModelState.AddModelError("Image", "The file you chose was not valid!");
-                    return View(blog);
-                } 
+                    blog.ImageData = await _imageService.EncodeImageAsync("BlogDefaultImage.jpg");
+                    blog.ContentType = "jpg";
+                }
                 else
                 {
-                    blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
-                    blog.ContentType = _imageService.ContentType(blog.Image);
+                    if (!_imageService.ValidImage(blog.Image))
+                    {
+                        //We need to add a custom Model Error and inform the user
+                        ModelState.AddModelError("Image", "Please choose a valid image");
+                        return View(blog);
+                    }
+                    else
+                    {
+                        blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
+                        blog.ContentType = _imageService.ContentType(blog.Image);
+                    }
                 }
 
-                //Programmatically add in the Created Date.
                 blog.Created = DateTime.Now;
 
                 _context.Add(blog);
@@ -105,7 +111,7 @@ namespace ShadowBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,ImageData,ContentType,Image")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Image,Created,ContentType,ImageData")] Blog blog)
         {
             if (id != blog.Id)
             {
@@ -117,11 +123,21 @@ namespace ShadowBlog.Controllers
                 try
                 {
 
-                    if (blog.Image is not null)
+                    //Checking to see if the user chose a new image
                     {
-                        blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
-                        blog.ContentType = _imageService.ContentType(blog.Image);
+                        //If the image fails validation, complain to the user.
+                        if (!_imageService.ValidImage(blog.Image))
+                        {
+                            ModelState.AddModelError("Image", "There was a proble with the image, please choose another one!");
+                            return View(blog);
+                        }
+                        else
+                        {
+                            blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
+                            blog.ContentType = _imageService.ContentType(blog.Image);
+                        }
                     }
+
 
                     _context.Update(blog);
                     await _context.SaveChangesAsync();
