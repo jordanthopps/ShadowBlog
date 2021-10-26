@@ -42,8 +42,9 @@ namespace ShadowBlog.Controllers
         {
             var applicationDbContext = _context.BlogPosts
                 .Include(b => b.Blog)
-                .Where(b => b.ReadyStatus == blogId && b.ReadyStatus == Enums.ReadyState.ProductionReady)
+                .Where(b => b.ReadyStatus == ReadyState.ProductionReady)
                 .OrderByDescending(b => b.Created);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
