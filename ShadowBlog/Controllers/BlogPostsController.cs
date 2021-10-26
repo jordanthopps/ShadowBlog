@@ -31,7 +31,7 @@ namespace ShadowBlog.Controllers
             //Also ... I only want to grab production ready BlogPosts
             var blogPosts = _context.BlogPosts //database reference
                 .Include(b => b.Blog)
-                .Where(b => b.BlogId == blogId && b.ReadyStatus == Enums.ReadyState.ProductionReady)
+                .Where(b => b.BlogId == blogId && b.ReadyStatus == ReadyState.ProductionReady)
                 .OrderByDescending(b => b.Created);
 
             return View("Index", await blogPosts.ToListAsync());
@@ -109,13 +109,13 @@ namespace ShadowBlog.Controllers
                     else
                     {
                         blogPost.ImageData = await _imageService.EncodeImageAsync(blogPost.Image);
-                        blogPost.ContentType = _imageService.ContentType(blogPost.Image);
+                        blogPost.ImageType = _imageService.ContentType(blogPost.Image);
                     }
                 }
                 else
                 {
                     blogPost.ImageData = await _imageService.EncodeImageAsync("BlogPostDefaultImage.jpg");
-                    blogPost.ContentType = "jpg";
+                    blogPost.ImageType = "jpg";
                 }
 
                 //Programmatically add in the Created Date.
@@ -143,7 +143,7 @@ namespace ShadowBlog.Controllers
             {
                 return NotFound();
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", blogPost.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", blogPost.BlogId);
             return View(blogPost);
         }
 
@@ -152,7 +152,7 @@ namespace ShadowBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Updated,ReadyStatus,Slug,ImageData,ContentType,Image")] BlogPost blogPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Updated,ReadyStatus,Slug,ImageData,ImageType")] BlogPost blogPost)
         {
             if (id != blogPost.Id)
             {
@@ -163,24 +163,9 @@ namespace ShadowBlog.Controllers
             {
                 try
                 {
-
-                    //Checking to see if the user chose a new image
-                    {
-                        //If the image fails validation, complain to the user.
-                        if (!_imageService.ValidImage(blogPost.Image))
-                        {
-                            ModelState.AddModelError("Image", "There was a proble with the image, please choose another one!");
-                            return View(blogPost);
-                        }
-                        else
-                        {
-                            blogPost.ImageData = await _imageService.EncodeImageAsync(blogPost.Image);
-                            blogPost.ContentType = _imageService.ContentType(blogPost.Image);
-                        }
-                    }
-                        _context.Update(blogPost);
-                        await _context.SaveChangesAsync();
-                    }
+                    _context.Update(blogPost);
+                    await _context.SaveChangesAsync();
+                }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!BlogPostExists(blogPost.Id))
@@ -194,7 +179,7 @@ namespace ShadowBlog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", blogPost.BlogId); //Should "Name" be "Description"
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", blogPost.BlogId);
             return View(blogPost);
         }
 

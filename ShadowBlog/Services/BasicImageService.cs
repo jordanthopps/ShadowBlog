@@ -47,7 +47,7 @@ namespace ShadowBlog.Services
             return $"data:image/{type};base64,{Convert.ToBase64String(data)}";
         }
 
-        public bool ValidType(IFormFile file)
+        private bool ValidType(IFormFile file)
         {
             var fileContentType = ContentType(file).Split("/")[1]; //TODO: Fix this for Blogs Edit
 
@@ -58,7 +58,7 @@ namespace ShadowBlog.Services
             return position >= 0;
         }
 
-        public bool ValidSize(IFormFile file) 
+        private bool ValidSize(IFormFile file) 
         {
             const int maxFileSize = 2 * 1024 * 1024;
             return Size(file) < maxFileSize;

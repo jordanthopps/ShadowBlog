@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <label asp-for="Input.Image"></label>
-                <input type="file" asp-for="Input.Image" class="form-control" />
+                <input type="file" accept=".png,.jpg,.jpeg" asp-for="Input.Image" class="form-control" />
                 <span asp-validation-for="Input.Image" class="text-danger"></span>
             </div>
 
