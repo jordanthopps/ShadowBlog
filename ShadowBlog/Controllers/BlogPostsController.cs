@@ -7,22 +7,43 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShadowBlog.Data;
 using ShadowBlog.Models;
+using ShadowBlog.Services.Interfaces;
+using ShadowBlog.Enums;
 
 namespace ShadowBlog.Controllers
 {
     public class BlogPostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public BlogPostsController(ApplicationDbContext context)
+        public BlogPostsController(ApplicationDbContext context,
+            IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
+        }
+
+        public async Task<IActionResult> ChildIndex(int blogId)
+        {
+            //I don't want to get all of the BlogPosts...
+            //I want to get all of the BlogPosts where the BlogId = blogId
+            //Also ... I only want to grab production ready BlogPosts
+            var blogPosts = _context.BlogPosts //database reference
+                .Include(b => b.Blog)
+                .Where(b => b.BlogId == blogId && b.ReadyStatus == Enums.ReadyState.ProductionReady)
+                .OrderByDescending(b => b.Created);
+
+            return View("Index", await blogPosts.ToListAsync());
         }
 
         // GET: BlogPosts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BlogPosts.Include(b => b.Blog);
+            var applicationDbContext = _context.BlogPosts
+                .Include(b => b.Blog)
+                .Where(b => b.ReadyStatus == blogId && b.ReadyStatus == Enums.ReadyState.ProductionReady)
+                .OrderByDescending(b => b.Created);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -46,8 +67,23 @@ namespace ShadowBlog.Controllers
         }
 
         // GET: BlogPosts/Create
-        public IActionResult Create()
+        public IActionResult Create(int? blogId)
         {
+            //If I am given an id
+            //1. It represents the BlogPost.BlogId
+            //2. I don't show the select list to the user
+            //3. I embed the incoming id into the form somehow so that it is treated as the BlogId
+            if(blogId is not null)
+            {
+                //var newBlogPost = new BlogPost() | Same as the above line.
+                BlogPost newBlogPost = new() 
+                { 
+                    BlogId = (int)blogId
+                };
+                return View(newBlogPost);
+            }
+
+
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
             return View();
         }
@@ -61,6 +97,26 @@ namespace ShadowBlog.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Either record the incoming image or use the default image.
+                if (blogPost.Image is not null)
+                {
+                    if (!_imageService.ValidImage(blogPost.Image))
+                    {
+                        ModelState.AddModelError("Image", "Please choose a valid image.");
+                        return View(blogPost);
+                    }
+                    else
+                    {
+                        blogPost.ImageData = await _imageService.EncodeImageAsync(blogPost.Image);
+                        blogPost.ContentType = _imageService.ContentType(blogPost.Image);
+                    }
+                }
+                else
+                {
+                    blogPost.ImageData = await _imageService.EncodeImageAsync("BlogPostDefaultImage.jpg");
+                    blogPost.ContentType = "jpg";
+                }
+
                 //Programmatically add in the Created Date.
                 blogPost.Created = DateTime.Now;
                 blogPost.Updated = DateTime.Now;
@@ -95,7 +151,7 @@ namespace ShadowBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Updated,ReadyStatus,Slug,ImageData,ImageType")] BlogPost blogPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Updated,ReadyStatus,Slug,ImageData,ContentType,Image")] BlogPost blogPost)
         {
             if (id != blogPost.Id)
             {
@@ -106,9 +162,24 @@ namespace ShadowBlog.Controllers
             {
                 try
                 {
-                    _context.Update(blogPost);
-                    await _context.SaveChangesAsync();
-                }
+
+                    //Checking to see if the user chose a new image
+                    {
+                        //If the image fails validation, complain to the user.
+                        if (!_imageService.ValidImage(blogPost.Image))
+                        {
+                            ModelState.AddModelError("Image", "There was a proble with the image, please choose another one!");
+                            return View(blogPost);
+                        }
+                        else
+                        {
+                            blogPost.ImageData = await _imageService.EncodeImageAsync(blogPost.Image);
+                            blogPost.ContentType = _imageService.ContentType(blogPost.Image);
+                        }
+                    }
+                        _context.Update(blogPost);
+                        await _context.SaveChangesAsync();
+                    }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!BlogPostExists(blogPost.Id))

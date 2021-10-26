@@ -49,7 +49,7 @@ namespace ShadowBlog.Services
 
         public bool ValidType(IFormFile file)
         {
-            var fileContentType = ContentType(file).Split("/")[1];
+            var fileContentType = ContentType(file).Split("/")[1]; //TODO: Fix this for Blogs Edit
 
             var acceptableExtensions = _configuration["AppImages:AllowedExtensions"];
             var extList = acceptableExtensions.Split(',').ToList();
