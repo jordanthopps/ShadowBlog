@@ -48,6 +48,7 @@ namespace ShadowBlog
             services.AddTransient<DataService>();
             //Registration of BasicImageService.cs as the concrete class to be used by IImageService inteface.
             services.AddScoped<IImageService, BasicImageService>(); //AddScoped means scoped to user.
+            services.AddTransient<ISlugService, BasicSlugService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -16,12 +16,14 @@ namespace ShadowBlog.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IImageService _imageService;
+        private readonly ISlugService _slugService;
 
         public BlogPostsController(ApplicationDbContext context,
-            IImageService imageService)
+            IImageService imageService, ISlugService slugService)
         {
             _context = context;
             _imageService = imageService;
+            _slugService = slugService;
         }
 
         public async Task<IActionResult> ChildIndex(int blogId)
@@ -46,6 +48,16 @@ namespace ShadowBlog.Controllers
                 .OrderByDescending(b => b.Created);
 
             return View(await applicationDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> Preview()
+        {
+            var blogPosts = _context.BlogPosts
+                .Include(b => b.Blog)
+                .Where(b => b.ReadyStatus == ReadyState.InPreview)
+                .OrderByDescending(b => b.Created);
+
+            return View("Index", await blogPosts.ToListAsync());
         }
 
         // GET: BlogPosts/Details/5
@@ -74,15 +86,15 @@ namespace ShadowBlog.Controllers
             //1. It represents the BlogPost.BlogId
             //2. I don't show the select list to the user
             //3. I embed the incoming id into the form somehow so that it is treated as the BlogId
-            if(blogId is not null)
+            if(blogId is not null) //we check for not null first because if it's not null, then we have to create an instance of blogPost and fill out its property.
             {
-                //var newBlogPost = new BlogPost() | Same as the above line.
-                BlogPost newBlogPost = new() 
+                //var newBlogPost = new BlogPost() | Same as the below line.
+                BlogPost newBlogPost = new() //Purpose of this line: instantiate a new model form of BlogPost with a default value for BlogId
                 { 
                     BlogId = (int)blogId
                 };
                 return View(newBlogPost);
-            }
+            } //the reason why we code this up
 
 
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
@@ -98,6 +110,20 @@ namespace ShadowBlog.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                //Let's create and check the slug for uniqueness
+                var slug = _slugService.UrlFriendly(blogPost.Title);
+                if(!_slugService.IsUnique(slug))
+                {
+                    //Create a custom Model Error and complain to the user
+                    ModelState.AddModelError("Title", "Error: Please use a different that has already been used.");
+                    return View(blogPost);
+                }
+                else
+                {
+                    blogPost.Slug = slug;
+                }
+
                 //Either record the incoming image or use the default image.
                 if (blogPost.Image is not null)
                 {
@@ -152,17 +178,32 @@ namespace ShadowBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Updated,ReadyStatus,Slug,ImageData,ImageType")] BlogPost blogPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,ReadyStatus,Slug,ImageData,ImageType,Image")] BlogPost blogPost)
         {
             if (id != blogPost.Id)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
                 {
+                    //In the Edit we have to make sure that the Title actually changed before checking slug uniqueness                    
+                    var slug = _slugService.UrlFriendly(blogPost.Title);
+                    if (slug != blogPost.Slug)
+                    {
+                        if (!_slugService.IsUnique(slug))
+                        {
+                            //Create a custom Model Error and complain to the user
+                            ModelState.AddModelError("Title", "Error: Title has already been used.");
+                            return View(blogPost);
+                        }
+                        else
+                        {
+                            blogPost.Slug = slug;
+                        }
+                    }
+                    blogPost.Updated = DateTime.Now;
                     _context.Update(blogPost);
                     await _context.SaveChangesAsync();
                 }

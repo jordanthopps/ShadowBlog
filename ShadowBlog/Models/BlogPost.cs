@@ -46,6 +46,7 @@ namespace ShadowBlog.Models
 
         //This will basically be the Title run through a formatter
         //Role Based Security - role-based-security
+        // ROLE BASED SECURITY will also be - role-based-security
         public string Slug { get; set; }
 
         //This represents the byte data not the physical file
