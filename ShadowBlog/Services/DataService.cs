@@ -76,10 +76,10 @@ namespace ShadowBlog.Services
             //TODO: Seed a User who will occupy the Moderator role
             BlogUser mod = new()
             {
-                Email = "JT@Mailinator.com",
-                UserName = "JT@Mailinator.com",
-                FirstName = "Jordan",
-                LastName = "Taylor",
+                Email = "MoiraRose@Mailinator.com",
+                UserName = "MoiraRose@Mailinator.com",
+                FirstName = "Moira",
+                LastName = "Rose",
                 PhoneNumber = "555-5555",
                 EmailConfirmed = true,
                 ImageData = await _imageService.EncodeImageAsync("generic-user-purpbg.png"),
