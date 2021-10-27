@@ -21,12 +21,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @*Only render this LI if the person is an Admin*@
+                        @if (User.IsInRole("Administrator")){
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="BlogPosts" asp-action="Create">Create BlogPost</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="BlogPosts" asp-action="Edit">Edit BlogPost</a>
-                        </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="BlogPosts" asp-action="Index">All BlogPost</a>
                         </li>
