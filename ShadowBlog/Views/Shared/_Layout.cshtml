@@ -1,55 +1,229 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="zxx">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ShadowBlog</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Shadow Blog</title>
+
+    <!--favicon icon-->
+    @*<link rel="icon" href="assets/img/fevicon.png">*@
+
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Khula:wght@400;600&family=Lustria&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link href="~/css/animate.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/fontawesome.min.css" rel="stylesheet" />
+    <link href="~/css/magnific.min.css" rel="stylesheet" />
+    <link href="~/css/nice-select.min.css" rel="stylesheet" />
+    <link href="~/css/owl.min.css" rel="stylesheet" />
+    <link href="~/css/responsive.css" rel="stylesheet" />
+    <link href="~/css/slick-slide.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ShadowBlog</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+<body class='sc5'>
+    <!-- preloader area start -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-inner">
+            <div id="wave1">
+            </div>
+            <div class="spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- preloader area end -->
+    <div class="body-overlay" id="body-overlay"></div>
+
+    <!-- search popup area start -->
+    <div class="search-popup" id="search-popup">
+        <form action="home-1.html" class="search-form">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search.....">
+            </div>
+            <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+    <!-- //. search Popup -->
+    <!-- navbar start -->
+    <div id="side-navbar" class="side-navbar">
+        <i id="side-menu-close" class="fa fa-times"></i>
+        <ul class="side-navbar-items">
+            <li class="menu-item-has-children">
+                Home
+                <ul class="sub-menu ps-0">
+                    <li><a href="home-1.html">Home 01</a></li>
+                    <li><a href="home-2.html">Home 02</a></li>
+                    <li><a href="home-3.html">Home 03</a></li>
+                    <li><a href="home-4.html">Home 04</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Features</a></li>
+            <li class="menu-item-has-children">
+                Pages
+                <ul class="sub-menu ps-0">
+                    <li><a href="single.html">Blog</a></li>
+                    <li><a href="single-blog-2.html">Blog 02</a></li>
+                    <li><a href="single-blog-3.html">Blog 03</a></li>
+                    <li><a href="single-blog-4.html">Blog 04</a></li>
+                    <li><a href="single-blog-full.html">Blog 05</a></li>
+                    <li><a href="gallery-blog.html">Gallery Blog</a></li>
+                </ul>
+            </li>
+            <li><a href="home-3.html">Lifestyle</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+    <header class="navbar-area">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid nav-container">
+                <div class="responsive-mobile-menu">
+                    <button class="menu toggle-btn d-block d-lg-none" data-target="#themefie_main_menu"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="icon-left"></span>
+                        <span class="icon-right"></span>
+                    </button>
+                </div>
+                <div class="lawel-header-left">
+                    <div class="side-menu-bar d-inline-flex">
+                        <i id="side-menu-open" class="fa fa-bars"></i>
+                    </div>
+                    <a href="home-1.html" class="logo">
+                        <img src="/img/Profile Background.png" alt="img">
+                    </a>
+                    <div class="nav-right-part">
+                        <ul class="social-area">
+                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li><a class="search" href="#"><i class="fa fa-search"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="collapse navbar-collapse" id="themefie_main_menu">
+                    <ul class="navbar-nav menu-open text-center">
+                        <li>
+                            <a href="home-1.html">HOME</a>
                         </li>
-                        @*Only render this LI if the person is an Admin*@
-                        @if (User.IsInRole("Administrator")){
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="BlogPosts" asp-action="Create">Create BlogPost</a>
+                        <li>
+                            <a href="home-4.html">FEATURES</a>
                         </li>
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="BlogPosts" asp-action="Index">All BlogPost</a>
+                        <li class="menu-item-has-children">
+                            <a href="#">PAGES</a>
+                            <ul class="sub-menu">
+                                <li><a href="single.html">Blog</a></li>
+                                <li><a href="single-blog-2.html">Blog 02</a></li>
+                                <li><a href="single-blog-3.html">Blog 03</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="about.html">ABOUT</a>
+                        </li>
+                        <li>
+                            <a href="contact.html">CONTACT</a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                </div>
+                <div class="nav-right-part text-end nav-right-part-desktop">
+                    <ul>
+                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a class="search" href="#"><i class="fa fa-search"></i></a></li>
+                    </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <!-- navbar end -->
+
+    <div class="banner-logo-area">
+        <img src="~/img/Profile Background.png" alt="img">
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - ShadowBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+@RenderBody() 
+
+    <!-- footer area start -->
+    <footer class="footer-area text-center">
+        <div class="footer-inner">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4">
+                        <div class="footer-widget widget">
+                            <h4 class="widget-title">Follow me</h4>
+                            <ul class="social-area">
+                                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="footer-widget widget">
+                            <div class="footer-logo d-inline-block">
+                                <img src="assets/img/logo-2.png" alt="img">
+                            </div>
+                            <p>Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non mauris vitae erat consequat auctor eu in elit. Class aptent taciti disse in orci enim.</p>
+                            <form>
+                                <div class="single-input-wrap mb-0">
+                                    <input type="email" placeholder="Enter Email">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="footer-widget widget widget_link">
+                            <h4 class="widget-title">Popular tags</h4>
+                            <ul>
+                                <li><a href="home-3.html">#TRAVEL</a></li>
+                                <li><a href="home-3.html">#LIFE</a></li>
+                                <li><a href="home-3.html">#LAKE</a></li>
+                                <li><a href="home-3.html">#VLOGOS</a></li>
+                                <li><a href="home-3.html">#ALTEGO</a></li>
+                                <li><a href="home-3.html">#MONACO</a></li>
+                                <li><a href="home-3.html">#SELECTED</a></li>
+                                <li><a href="home-3.html">#HELLO</a></li>
+                                <li><a href="home-3.html">#ITSON</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- footer area end -->
+    <!-- back-to-top end -->
+    <div class="back-to-top">
+        <span class="back-top"><i class="fas fa-angle-double-up"></i></span>
+    </div>
+
+
+
+    <!-- all plugins here -->
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/counterup.js"></script>
+    <script src="~/js/fontawesome.min.js"></script>
+    <script src="~/js/imageloded.min.js"></script>
+    <script src="~/js/isotope.pkgd.min.js"></script>
+    <script src="~/js/jquery.3.6.min.js"></script>
+    <script src="~/js/magnific.min.js"></script>
+    <script src="~/js/nice-select.min.js"></script>
+    <script src="~/js/owl.min.js"></script>
+    <script src="~/js/ripple.js"></script>
+    <script src="~/js/slick-slider.min.js"></script>
+    <script src="~/js/waypoint.js"></script>
+    <script src="~/js/wow.min.js"></script>
+    <!-- main js  -->
+    <script src="~/js/main.js"></script>
+
+    <!--Tiny MCE-->
     <script src="https://cdn.tiny.cloud/1/6q3jild435pb80zy4oolee7eb53rppqg5te34ccqfh85haoy/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
@@ -57,5 +231,7 @@
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
+

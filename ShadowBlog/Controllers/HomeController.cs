@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using ShadowBlog.Data;
 using ShadowBlog.Models;
 using System;
 using System.Collections.Generic;
@@ -12,15 +14,18 @@ namespace ShadowBlog.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext dbContext)
         {
             _logger = logger;
+            _dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            //Show all Blogs...
+            return View( await _dbContext.Blogs.ToListAsync());
         }
 
         public IActionResult Privacy()

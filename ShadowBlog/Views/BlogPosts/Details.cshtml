@@ -1,78 +1,195 @@
-﻿@model ShadowBlog.Models.BlogPost
+﻿@using ShadowBlog.Models
+@model ShadowBlog.Models.BlogPost
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<!-- latest post Area Start-->
+<section class="latest-post-area pd-bottom-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="blog-post-item-wrap mb-3">
+                    <div class="thumb pd-bottom-45">
+                        <img class="w-100" src="assets/img/post/single.jpg" alt="img">
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            <div class="post-content text-center pt-0 mb-4">
+                                <h2><a href="#">@Model.Title</a></h2>
+                                <div class="post-meta">
+                                    <ul>
+                                        <li>By</li>
+                                        <li><a href="#">Jordan Hopps</a></li>
+                                        <li>@Model.Created.ToString("MMM dd, yyyy")</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @Html.Raw(Model.Content)
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="single-post-footer">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-4 col-sm-5">
+                                    <ul class="social-area">
+                                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6 col-md-8 col-sm-7 text-sm-end">
+                                    <div class="tag-inner">
+                                        <span><a href="#">#BLOG</a></span>
+                                        <span><a href="#">#WOMEN</a></span>
+                                        <span><a href="#">#FASHION</a></span>
+                                        <span><a href="#">#SWIMWEAR</a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blog-about-author d-flex">
+                            <div class="thumb">
+                                <img src="assets/img/author.png" alt="img">
+                            </div>
+                            <div class="author-info">
+                                <h4 class="author-name">Alison Morgan</h4>
+                                <p class="author-content">Mauris massa nisi, viverra ac sapien, tempor auctor tempus pulvinar varius vestibulum. Sed pellen tesque quis sem eget euismod. Duis ut risus consectetur justo euismod viverra in purus. </p>
+                                <ul class="social-area">
+                                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="comments-inner-wrap">
+                            <h3 class="comments-title mt-5">Leave A Reply</h3>
+                            <!-- COMMENT FORM -->
+                            <form class="comment-form">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="single-input-wrap">
+                                            <input type="text" placeholder="NAME">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="single-input-wrap">
+                                            <input type="email" placeholder="EMAIl">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="single-input-wrap">
+                                            <input type="text" placeholder="WEBSITE">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="single-input-wrap d-flex">
+                                            <textarea placeholder="ADD A COMMENT"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="submit" value="Post Comment" class="submit-btn btn btn-base">
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- ./COMMENT FORM -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- latest post Area End -->
+<!-- instagram Area Start-->
+<div class="instagram-area">
+    <div class="instagram-slider owl-carousel">
+        <div class="item">
+            <a href="#">
+                <img src="assets/img/instagram/1.jpg" alt="img">
+            </a>
+        </div>
+        <div class="item">
+            <a href="#">
+                <img src="assets/img/instagram/2.jpg" alt="img">
+            </a>
+        </div>
 
-<div>
-    <h4>BlogPost</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Abstract)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Abstract)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ReadyStatus)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ReadyStatus)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageData)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImageData)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageType)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImageType)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Blog)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Blog.Description)
-        </dd>
-    </dl>
+        <div class="item">
+            <a href="#">
+                <img src="assets/img/instagram/3.jpg" alt="img">
+            </a>
+        </div>
+        <div class="item">
+            <a href="#">
+                <img src="assets/img/instagram/4.jpg" alt="img">
+            </a>
+        </div>
+        <div class="item">
+            <a href="#">
+                <img src="assets/img/instagram/5.jpg" alt="img">
+            </a>
+        </div>
+        <div class="item">
+            <a href="#">
+                <img src="assets/img/instagram/6.jpg" alt="img">
+            </a>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<!-- instagram Area End -->
+<!-- footer area start -->
+<footer class="footer-area text-center">
+    <div class="footer-inner">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-4">
+                    <div class="footer-widget widget">
+                        <h4 class="widget-title">Follow me</h4>
+                        <ul class="social-area">
+                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer-widget widget">
+                        <div class="footer-logo d-inline-block">
+                            <img src="assets/img/logo-2.png" alt="img">
+                        </div>
+                        <p>Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non mauris vitae erat consequat auctor eu in elit. Class aptent taciti disse in orci enim.</p>
+                        <form>
+                            <div class="single-input-wrap mb-0">
+                                <input type="email" placeholder="Enter Email">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer-widget widget widget_link">
+                        <h4 class="widget-title">Popular tags</h4>
+                        <ul>
+                            <li><a href="home-3.html">#TRAVEL</a></li>
+                            <li><a href="home-3.html">#LIFE</a></li>
+                            <li><a href="home-3.html">#LAKE</a></li>
+                            <li><a href="home-3.html">#VLOGOS</a></li>
+                            <li><a href="home-3.html">#ALTEGO</a></li>
+                            <li><a href="home-3.html">#MONACO</a></li>
+                            <li><a href="home-3.html">#SELECTED</a></li>
+                            <li><a href="home-3.html">#HELLO</a></li>
+                            <li><a href="home-3.html">#ITSON</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer area end -->   

@@ -27,7 +27,7 @@ namespace ShadowBlog.Controllers
             _slugService = slugService;
         }
 
-        public async Task<IActionResult> ChildIndex(int blogId)
+        public async Task<IActionResult> ChildIndex(int blogId) //Right now, this yields the same exact view as Index() -- why?
         {
             //I don't want to get all of the BlogPosts...
             //I want to get all of the BlogPosts where the BlogId = blogId
@@ -37,7 +37,7 @@ namespace ShadowBlog.Controllers
                 .Where(b => b.BlogId == blogId && b.ReadyStatus == ReadyState.ProductionReady)
                 .OrderByDescending(b => b.Created);
 
-            return View("Index", await blogPosts.ToListAsync());
+            return View( await blogPosts.ToListAsync());
         }
 
         // GET: BlogPosts
@@ -62,7 +62,7 @@ namespace ShadowBlog.Controllers
         }
 
         // GET: BlogPosts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id) //TODO: THIS IS BLOWING UP! WHEN SELECTING THE BLOGPOST FROM BLOG
         {
             if (id == null)
             {

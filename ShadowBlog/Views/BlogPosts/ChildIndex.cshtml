@@ -1,5 +1,5 @@
 ﻿@using ShadowBlog.Models
-@model IEnumerable<Blog>
+@model IEnumerable<BlogPost>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -37,7 +37,7 @@
 <section class="latest-post-area pd-top-115 pd-bottom-110">
     <div class="container">
         <div class="row">
-            @foreach (var blog in Model)
+            @foreach (var blogPost in Model)
             {
                 <div class="col-lg-4 col-md-6">
                     <div class="thumb pb-lg-3 pb-5">
@@ -45,13 +45,13 @@
                     </div>
                     <div class="blog-post-item-wrap">
                         <div class="post-content">
-                            <h4><a asp-controller="BlogPosts" asp-action="ChildIndex" asp-route-blogId="@blog.Id">@blog.Name</a></h4>
-                            <p>@blog.Description</p>
+                            <h4><a asp-controller="BlogPosts" asp-action="Details" asp-route-blogId="@blogPost.Id">@blogPost.Title</a></h4>
+                            <p>@blogPost.Abstract</p>
                             <div class="post-meta">
                                 <ul>
                                     <li>By</li>
                                     <li><a href="#">Jordan Hopps</a></li> @*Add link to take them to my portfolio*@
-                                    <li>@blog.Created.ToString("MMM dd, yyyy")</li>
+                                    <li>@blogPost.Created.ToString("MMM dd, yyyy")</li>
                                 </ul>
                             </div>
                         </div>
