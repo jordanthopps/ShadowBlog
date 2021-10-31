@@ -62,7 +62,7 @@ namespace ShadowBlog.Controllers
         }
 
         // GET: BlogPosts/Details/5
-        public async Task<IActionResult> Details(int? id) //TODO: THIS IS BLOWING UP! WHEN SELECTING THE BLOGPOST FROM BLOG
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
