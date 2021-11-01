@@ -1,4 +1,6 @@
 ﻿@using ShadowBlog.Models
+@using ShadowBlog.Services.Interfaces
+@inject IImageService _imageService
 @model IEnumerable<Blog>
 
 @{
@@ -9,24 +11,24 @@
 <!-- Banner Area Start-->
 <section class="banner-area">
     <div class="banner-slider owl-carousel">
-        <div class="item" style="background: url(assets/img/banner/slider-1.jpg)">
+        <div class="item" style="background: url(/img/BlogPostCarousel.png)">
             <div class="banner-inner">
-                <h4>Fashion</h4>
-                <h2>Dining Room Reveal</h2>
+                <h4>Dev Blog</h4>
+                <h2>Blog Post 1</h2>
                 <a href="single.html" class="btn readmore-button">Read more</a>
             </div>
         </div>
         <div class="item" style="background: url(assets/img/banner/slider-2.jpg)">
             <div class="banner-inner">
-                <h4>Fashion</h4>
-                <h2>Dining Room Reveal</h2>
+                <h4>Dev Blog</h4>
+                <h2>Blog Post 2</h2>
                 <a href="single.html" class="btn readmore-button">Read more</a>
             </div>
         </div>
         <div class="item" style="background: url(assets/img/banner/slider-1.jpg)">
             <div class="banner-inner">
-                <h4>Fashion</h4>
-                <h2>Dining Room Reveal</h2>
+                <h4>Dev Blog</h4>
+                <h2>Blog Post 3</h2>
                 <a href="single.html" class="btn readmore-button">Read more</a>
             </div>
         </div>
@@ -41,7 +43,7 @@
             {
                 <div class="col-lg-4 col-md-6">
                     <div class="thumb pb-lg-3 pb-5">
-                        <img class="w-100" src="assets/img/post/1.jpg" alt="img">
+                        <img class="w-100" src=@_imageService.DecodeImage(blog.ImageData, blog.ContentType)  alt="BlogPostImage"> @*TODO: Question about looped image.*@
                     </div>
                     <div class="blog-post-item-wrap">
                         <div class="post-content">
@@ -50,7 +52,7 @@
                             <div class="post-meta">
                                 <ul>
                                     <li>By</li>
-                                    <li><a href="#">Jordan Hopps</a></li> @*Add link to take them to my portfolio*@
+                                    <li><a href="https://jordanthopps.netlify.app/" target="_blank">Jordan Hopps</a></li>
                                     <li>@blog.Created.ToString("MMM dd, yyyy")</li>
                                 </ul>
                             </div>
