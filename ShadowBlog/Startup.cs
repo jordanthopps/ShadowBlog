@@ -51,6 +51,7 @@ namespace ShadowBlog
             services.AddScoped<IImageService, BasicImageService>(); //AddScoped means scoped to user.
             services.AddTransient<ISlugService, BasicSlugService>();
             services.AddTransient<IEmailSender, BasicEmailService>();
+            services.AddScoped<SearchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

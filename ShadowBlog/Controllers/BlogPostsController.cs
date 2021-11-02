@@ -10,6 +10,7 @@ using ShadowBlog.Models;
 using ShadowBlog.Services.Interfaces;
 using ShadowBlog.Enums;
 using Microsoft.AspNetCore.Authorization;
+using ShadowBlog.Services;
 
 namespace ShadowBlog.Controllers
 {
@@ -18,13 +19,27 @@ namespace ShadowBlog.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IImageService _imageService;
         private readonly ISlugService _slugService;
+        private readonly SearchService _searchService;
 
         public BlogPostsController(ApplicationDbContext context,
-            IImageService imageService, ISlugService slugService)
+            IImageService imageService, ISlugService slugService, SearchService searchService)
         {
             _context = context;
             _imageService = imageService;
             _slugService = slugService;
+            _searchService = searchService;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SearchPosts(string searchTerm)
+        {
+            //I have to write code that uses thisd searchTerm to find
+            //the list of BlogPosts and then push them into a View...
+
+            //Create, Register and Inject and instance of SearchService
+            var blogPosts = await _searchService.SearchAsync(searchTerm);
+            return View("ChildIndex", blogPosts);
         }
 
         public async Task<IActionResult> ChildIndex(int blogId) //Right now, this yields the same exact view as Index() -- why?

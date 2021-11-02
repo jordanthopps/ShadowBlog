@@ -40,15 +40,15 @@
     <!-- preloader area end -->
     <div class="body-overlay" id="body-overlay"></div>
 
-    <!-- search popup area start -->
-    <div class="search-popup" id="search-popup">
-        <form action="home-1.html" class="search-form">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search.....">
-            </div>
-            <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
-        </form>
-    </div>
+    <!-- search popup form area start -->
+    @*<div class="search-popup" id="search-popup">
+            <form asp-action="SearchPosts" asp-controller="BlogPosts" class="search-form">
+                <div class="form-group">
+                    <input type="text" name="searchTerm" class="form-control" placeholder="Search.....">
+                </div>
+                <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
+            </form>
+        </div>*@
     <!-- //. search Popup -->
     <!-- navbar start -->
     <!--Side Nav Menu-->
@@ -59,16 +59,19 @@
             <li><a href="https://jordanthopps.netlify.app/#about" target="_blank">About</a></li>
             <li><a asp-controller="Home" asp-action="ContactMe">Contact</a></li>
 
-            @*<li>
-                    <a asp-area="Identity"
-                       asp-page="/Account/Login">Log In</a>
-                </li>
-                <li>
-                    <a asp-area="Identity"
-                       asp-page="/Account/Register">Register</a>
-                </li>*@
+            <li>
+                <a asp-area="Identity"
+                   asp-page="/Account/Login">Log In</a>
+            </li>
+            <li>
+                <a asp-area="Identity"
+                   asp-page="/Account/Register">Register</a>
+            </li>
+            <li>
+                <a asp-area="Identity"
+                   asp-pag="/Account/Logout">Logout</a>
+            </li>
         </ul>
-        <partial name="_LoginPartial" />
     </div>
     <!-- /Side Nav Menu-->
     <!--Top Nav Menu-->
@@ -87,11 +90,6 @@
                         <i id="side-menu-open" class="fa fa-bars"></i>
                     </div>
                 </div>
-                @*<div class="justify-content-md-end">
-                        <a href="home-1.html" class="logo">
-                            <img src="~/img/Profile Background.png" alt="img">
-                        </a>
-                    </div>*@
                 <div class="collapse navbar-collapse" id="themefie_main_menu">
                     <ul class="navbar-nav menu-open text-end">
                         <li>
@@ -103,20 +101,38 @@
                         <li>
                             <a asp-controller="Home" asp-action="ContactMe">Contact</a>
                         </li>
+                        @*<li class="current-menu-item menu-item-has-children">Social
+                            <ul class="sub-menu"> 
+                                <li><a href="#"><i class="fab fa-twitter"></i>   Twitter</a></li>
+                                <li><a href="#"><i class="fab fa-github"></i>    GitHub</a></li>
+                                <li><a href="#"><i class="fab fa-linkedin-in"></i>    LinkedIn</a></li>
+                            </ul>
+                        </li>*@
                         <li><a href="#"><i class="fab fa-twitter"></i></a></li>
                         <li><a href="#"><i class="fab fa-github"></i></a></li>
                         <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                        @*<li>
-                                <a asp-area="Identity"
-                                   asp-page="/Account/Login">Log In</a>
-                            </li>
-                            <li>
-                                <a asp-area="Identity"
-                                   asp-page="/Account/Register">Register</a>
-                            </li>*@
+                        <li class="current-menu-item menu-item-has-children">
+                            Account
+                            <ul class="sub-menu">
+                                <li>
+                                    <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+                                </li>
+                                <li>
+                                    <a asp-area="Identity" asp-page="/Account/Register">Register</a>
+                                </li>
+                                <li>
+                                    <a asp-area="Identity" asp-page="/Account/Logout">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
-
-                    <partial name="_LoginPartial" />
+                    <form asp-action="SearchPosts" asp-controller="BlogPosts" class="input-group rounded w-50 px-4">
+                        <input type="search" class="form-control rounded" placeholder="Search..." aria-label="Search"
+                               aria-describedby="search-addon" name="searchTerm" />
+                        <button class="input-group-text border-0" type="submit" id="search-addon">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </nav>
@@ -125,8 +141,9 @@
     @*<div class="banner-logo-area">
             <img src="~/img/Blog _Layout Head.png" alt="img">
         </div>*@
-
-    @RenderBody()
+    <div class="container-fluid">
+        @RenderBody()
+    </div>
 
     <!-- footer area start -->
     <footer class="footer-area text-center">
