@@ -58,15 +58,17 @@
             <li><a href="#">Home</a></li>
             <li><a href="https://jordanthopps.netlify.app/#about" target="_blank">About</a></li>
             <li><a asp-controller="Home" asp-action="ContactMe">Contact</a></li>
-            <li>
-                <a asp-area="Identity"
-                   asp-page="/Account/Login">Log In</a>
-            </li>
-            <li>
-                <a asp-area="Identity"
-                   asp-page="/Account/Register">Register</a>
-            </li>
+
+            @*<li>
+                    <a asp-area="Identity"
+                       asp-page="/Account/Login">Log In</a>
+                </li>
+                <li>
+                    <a asp-area="Identity"
+                       asp-page="/Account/Register">Register</a>
+                </li>*@
         </ul>
+        <partial name="_LoginPartial" />
     </div>
     <!-- /Side Nav Menu-->
     <!--Top Nav Menu-->
@@ -104,15 +106,17 @@
                         <li><a href="#"><i class="fab fa-twitter"></i></a></li>
                         <li><a href="#"><i class="fab fa-github"></i></a></li>
                         <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                        <li>
-                            <a asp-area="Identity"
-                               asp-page="/Account/Login">Log In</a>
-                        </li>
-                        <li>
-                            <a asp-area="Identity"
-                               asp-page="/Account/Register">Register</a>
-                        </li>
+                        @*<li>
+                                <a asp-area="Identity"
+                                   asp-page="/Account/Login">Log In</a>
+                            </li>
+                            <li>
+                                <a asp-area="Identity"
+                                   asp-page="/Account/Register">Register</a>
+                            </li>*@
                     </ul>
+
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
