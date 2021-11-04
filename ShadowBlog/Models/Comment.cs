@@ -25,7 +25,7 @@ namespace ShadowBlog.Models
         public DateTime? Deleted { get; set; } //soft delete
         public DateTime? Moderated { get; set; }
         public string ModeratedBody { get; set; } //modify body of comments
-        public ModType Moderationtype { get; set; }
+        public ModType ModerationType { get; set; }
 
         //Navigational properties
         public virtual BlogPost BlogPost { get; set; }

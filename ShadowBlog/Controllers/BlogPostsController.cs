@@ -11,6 +11,7 @@ using ShadowBlog.Services.Interfaces;
 using ShadowBlog.Enums;
 using Microsoft.AspNetCore.Authorization;
 using ShadowBlog.Services;
+using X.PagedList;
 
 namespace ShadowBlog.Controllers
 {
@@ -30,19 +31,37 @@ namespace ShadowBlog.Controllers
             _searchService = searchService;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SearchPosts(string searchTerm)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> SearchPosts(string searchTerm)
+        //{
+        //    //I have to write code that uses thisd searchTerm to find
+        //    //the list of BlogPosts and then push them into a View...
+
+        //    //Create, Register and Inject and instance of SearchService
+        //    var blogPosts = await _searchService.SearchAsync(searchTerm);
+        //    return View("ChildIndex", blogPosts);
+        //}
+        
+       
+        public async Task<IActionResult> SearchPosts(int? page, string searchTerm) //these are route values.
         {
-            //I have to write code that uses thisd searchTerm to find
+            //I need to have a good page number and a page might come in as null
+            var pageNumber = page ?? 1;
+            var pageSize = 6;
+
+
+            //I have to write code that uses this searchTerm to find
             //the list of BlogPosts and then push them into a View...
 
-            //Create, Register and Inject and instance of SearchService
+            //In order to propagate the search term from one page to the next, I will
+            //use a ViewData to push the term into the view
+            ViewData["SearchTerm"] = searchTerm;
             var blogPosts = await _searchService.SearchAsync(searchTerm);
-            return View("ChildIndex", blogPosts);
+            return View(await blogPosts.ToPagedListAsync(pageNumber, pageSize));
         }
 
-        public async Task<IActionResult> ChildIndex(int blogId) //Right now, this yields the same exact view as Index() -- why?
+        public async Task<IActionResult> ChildIndex(int blogId)
         {
             //I don't want to get all of the BlogPosts...
             //I want to get all of the BlogPosts where the BlogId = blogId

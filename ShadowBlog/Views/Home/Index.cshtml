@@ -1,7 +1,10 @@
-﻿@using ShadowBlog.Models
+﻿@using X.PagedList
+@using ShadowBlog.Models
 @using ShadowBlog.Services.Interfaces
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
 @inject IImageService _imageService
-@model IEnumerable<Blog>
+@model IPagedList<Blog>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -39,11 +42,11 @@
 <section class="latest-post-area pd-top-115 pd-bottom-110">
     <div class="container">
         <div class="row">
-            @foreach (var blog in Model)
+            @foreach (var blog in Model.OrderBy(b => b.Created))
             {
                 <div class="col-lg-4 col-md-6">
                     <div class="thumb pb-lg-3 pb-5">
-                        <img class="w-100" src=@_imageService.DecodeImage(blog.ImageData, blog.ContentType)  alt="BlogPostImage"> @*TODO: Question about looped image.*@
+                        <img class="w-100" src=@_imageService.DecodeImage(blog.ImageData, blog.ContentType) alt="BlogPostImage">
                     </div>
                     <div class="blog-post-item-wrap">
                         <div class="post-content">
@@ -60,10 +63,24 @@
                     </div>
                 </div>
             }
-            <div class="col-lg-12 text-center mt-5">
-                <a class="btn btn-gray-border" href="home-2.html">LOAD MORE POSTS</a>
+        </div>
+        <hr />
+        <div class="row"> <!--@*PAGINATION VIEW*@-->
+            <<div class="col">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
+                        new PagedListRenderOptions
+                        {
+                            LiElementClasses = new string[] {"page-item"},
+                            PageClasses = new string[] {"page-link"}
+                        })
+            </div>
+        </div>
+        <hr />
     </div>
 </section>
 <!-- latest post Area End -->

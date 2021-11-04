@@ -18,10 +18,11 @@ namespace ShadowBlog
             //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
 
+            //Now I can extract the DataService from the ServiceCollection in order to use it.
             var dataService = host.Services
-                .CreateScope()
-                .ServiceProvider
-                .GetRequiredService<DataService>();
+                                  .CreateScope()
+                                  .ServiceProvider
+                                  .GetRequiredService<DataService>();
 
             await dataService.ManageDataAsync();
 

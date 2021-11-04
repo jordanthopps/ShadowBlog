@@ -341,7 +341,7 @@ namespace ShadowBlog.Data.Migrations
                     b.Property<string>("ModeratedBody")
                         .HasColumnType("text");
 
-                    b.Property<int>("Moderationtype")
+                    b.Property<int>("ModerationType")
                         .HasColumnType("integer");
 
                     b.Property<string>("ModeratorId")

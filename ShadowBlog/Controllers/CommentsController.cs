@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShadowBlog.Data;
 using ShadowBlog.Models;
+using ShadowBlog.Enums;
 
 namespace ShadowBlog.Controllers
 {
@@ -23,6 +25,7 @@ namespace ShadowBlog.Controllers
         }
 
         // GET: Comments
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Comment.Include(c => c.BlogPost).Include(c => c.BlogUser).Include(c => c.Moderator);
@@ -60,6 +63,8 @@ namespace ShadowBlog.Controllers
             if (ModelState.IsValid)
             {
                 comment.Created = DateTime.Now;
+
+                //I need an injected instance of UserManager...
                 comment.BlogUserId = _userManager.GetUserId(User);
 
                 _context.Add(comment);
@@ -68,9 +73,8 @@ namespace ShadowBlog.Controllers
 
                 //Return the user back to the Details page
                 return RedirectToAction("Details", "BlogPosts", new { id = comment.BlogPostId });
+
             }
-
-
 
             return View(comment);
         }
@@ -99,38 +103,47 @@ namespace ShadowBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogPostId,BlogUserId,ModeratorId,Created,Updated,CommentBody,Deleted,Moderated,ModeratedBody,Moderationtype")] Comment comment)
+        public async Task<IActionResult> Edit(int commentId, string body)
         {
-            if (id != comment.Id)
-            {
+            if (commentId == 0)
                 return NotFound();
-            }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(comment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CommentExists(comment.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                var comment = await _context.Comment.FindAsync(commentId);
+                comment.CommentBody = body;
+                comment.Updated = DateTime.Now;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "BlogPosts", new { id = comment.BlogPostId }, "fragComment");
             }
-            ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Abstract", comment.BlogPostId);
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", comment.BlogUserId);
-            ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
-            return View(comment);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CommentExists(commentId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Moderate(int commentId, int ModerationType, string moderatedBody)
+        {
+            var comment = await _context.Comment.FindAsync(commentId);
+            comment.Moderated = DateTime.Now;
+            comment.ModeratorId = _userManager.GetUserId(User);
+            comment.ModerationType = (ModType)ModerationType;
+            comment.ModeratedBody = moderatedBody;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "BlogPosts", new { id = comment.BlogPostId });
+        }
+
 
         // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)

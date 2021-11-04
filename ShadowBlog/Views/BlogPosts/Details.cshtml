@@ -1,6 +1,7 @@
 ﻿@using ShadowBlog.Models
 @using ShadowBlog.Services.Interfaces
 @using Microsoft.AspNetCore.Identity
+@using ShadowBlog.Enums
 @inject IImageService _imageService
 @inject UserManager<BlogUser> _userManager
 @model ShadowBlog.Models.BlogPost
@@ -87,26 +88,29 @@
                                 {
                                     <div class="offset-1 col-10">
                                         <div class="media mb-2">
-                                            @if (comment.BlogUser.ImageData is not null)
+                                            @if (comment.Moderated is not null)
                                             {
-                                                <img src="@_imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ImageType)" class="mr-3 img-fluid" alt="...">
+                                                <h5 class="mt-0">Moderated by @comment.Moderator.FullName on @comment.Moderated?.ToString("MMM dd, yyyy")</h5>
+                                                <h6 class="mt-0"><i>Moderated reason: @comment.ModerationType</i></h6>
+                                                <p>@comment.ModeratedBody</p>
+                                            }
+                                            else if (comment.Updated is not null)
+                                            {
+                                                <h5 class="mt-0">Updated by @comment.BlogUser.FullName on @comment.Updated?.ToString("MMM dd, yyyy")</h5>
+                                                <p>@comment.CommentBody</p>
+                                                <button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>
                                             }
                                             else
                                             {
-                                                <img src="~/img/generic-user-purpbg.png" class="mr-3 img-fluid" alt="...">
-                                            }
-                                            <div class="media-body">
                                                 <h5 class="mt-0">Created by @comment.BlogUser.FullName on @comment.Created.ToString("MMM dd, yyyy")</h5>
                                                 <p>@comment.CommentBody</p>
+                                                <button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>
+                                            }
 
-                                                @*Ask if this is my comment*@
-                                                @if (comment.Moderated is null && comment.BlogUserId == _userManager.GetUserId(User))
-                                                {
-                                                    //this button needs to trigger an Edit modal
-                                                    <button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>
-                                                }
-
-                                            </div>
+                                            @if (User.IsInRole("Moderator")) //If the user is a moderator, displays the Moderate button on the edit 
+                                            {
+                                                <button class="btn btn-danger px-3 btnModerate" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#ModerateModal">Moderate</button>
+                                            }
                                         </div>
                                     </div>
                                 }
@@ -118,6 +122,8 @@
             </div>
         </div>
     </div>
+
+    @*USER'S MODAL*@
     <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -137,19 +143,48 @@
             </div>
         </div>
     </div>
+
+    @*MODERATOR'S MODAL*@
+    <div class="modal fade" id="ModerateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Moderating Comment...</h5>
+                </div>
+                <div class="modal-body">
+                    <form asp-controller="Comments" asp-action="Moderate">
+                        <input type="hidden" id="ModerateModalCommentId" name="CommentId" />
+                        <select name="ModerationType" asp-items="@Html.GetEnumSelectList<ModType>()"></select>
+                        <textarea id="ModalModeratedBody" name="ModeratedBody" rows="5" class="w-100"></textarea>
+                        <button class="btn btn-danger w-100" type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @section Scripts
 {
         <script>
-
-        document.querySelectorAll("button.btnEdit").forEach(btn => {
-            btn.addEventListener("click", function () {
-                //Transfer the value of the button's data-UserCommentId to the Modals hidden input
-                document.getElementById("ModalCommentId").value = this.getAttribute('data-UserCommentId');
-                //I need to use JS to get the comment closest to the button i just clicked
-                let closestComment = this.closest(".media-body").querySelector("p").textContent;
-                document.getElementById("ModalCommentBody").textContent = closestComment;
+            document.querySelectorAll("button.btnEdit").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    //Transfer the value of the button's data-UserCommentId to the Modals hidden input
+                    document.getElementById("ModalCommentId").value = this.getAttribute('data-UserCommentId');
+                    //I need to use JS to get the comment closest to the button i just clicked
+                    let closestComment = this.closest(".media-body").querySelector("p").textContent;
+                    document.getElementById("ModalCommentBody").textContent = closestComment;
+                });
             });
-        });
+            document.querySelectorAll("button.btnModerate").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    document.getElementById("ModerateModalCommentId").value = this.getAttribute('data-UserCommentId');
+                    let closestComment = this.closest(".media-body").querySelector("p").textContent;
+                    document.getElementById("ModalModeratedBody").textContent = closestComment;
+                });
+            });
         </script>
     }
 </section>

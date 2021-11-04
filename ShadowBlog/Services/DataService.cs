@@ -16,16 +16,19 @@ namespace ShadowBlog.Services
         private readonly IImageService _imageService;
         private readonly UserManager<BlogUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ISlugService _slugService;
 
         public DataService(ApplicationDbContext dbContext,
             UserManager<BlogUser> userManager,
-            IImageService imageService, 
-            RoleManager<IdentityRole> roleManager)
+            IImageService imageService,
+            RoleManager<IdentityRole> roleManager, 
+            ISlugService slugService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _imageService = imageService;
             _roleManager = roleManager;
+            _slugService = slugService;
         }
 
 
@@ -38,6 +41,12 @@ namespace ShadowBlog.Services
 
             //Step 2: Create 2 Users and assign the roles.
             await SeedUsersAsync();
+
+            //Step 3: Seed Blogs -- For paging purposes ...
+            await SeedBlogsAsync();
+
+            //Step 4: Seed Posts -- For purposes of working with paging and forwarding the search term
+            await SeedBlogPostsAsync();
            
         }
 
@@ -88,6 +97,52 @@ namespace ShadowBlog.Services
 
             await _userManager.CreateAsync(mod, "Abc@123!");
             await _userManager.AddToRoleAsync(mod, "Moderator");
+            await _userManager.AddToRoleAsync(admin, "Moderator");
+        }
+
+
+        private async Task SeedBlogsAsync()
+        {
+            if (_dbContext.Blogs.Any())
+                return;
+
+            for (var loop = 1; loop <= 20; loop++)
+            {
+                _dbContext.Add(new Blog()
+                {
+                    Name = $"Blog for Application {loop}",
+                    Description = $"Everything I learned while assembling the Portfolio Application {loop}",
+                    Created = DateTime.Now.AddDays(loop),
+                    ImageData = await _imageService.EncodeImageAsync("BlogDefaultImage.jpg"),
+                    ContentType = "jpg"
+                });
+            }
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task SeedBlogPostsAsync()
+        {
+            if (_dbContext.BlogPosts.Any())
+                return;
+
+            var blogId = (await _dbContext.Blogs.AsNoTracking().OrderBy(b => b.Created).FirstOrDefaultAsync()).Id;
+            for (var loop = 1; loop <= 20; loop++)
+            {
+                var title = $"Post number {loop}";
+                _dbContext.Add(new BlogPost()
+                {
+                    BlogId = blogId,
+                    Title = title,
+                    ReadyStatus = Enums.ReadyState.ProductionReady,
+                    Slug = _slugService.UrlFriendly(title),
+                    Abstract = $"Abstract for Posts number {loop}",
+                    Content = $"Content of Post number {loop}",
+                    Created = DateTime.Now.AddDays(loop),
+                    ImageData = await _imageService.EncodeImageAsync("BlogPostDefaultImage.jpg"),
+                    ImageType = "jpg"
+                });
+            }
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

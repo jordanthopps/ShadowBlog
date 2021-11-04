@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace ShadowBlog.Controllers
 {
@@ -28,10 +29,14 @@ namespace ShadowBlog.Controllers
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            //Show all Blogs...
-            return View( await _dbContext.Blogs.ToListAsync());
+            //page might be null...if it is, I'll update it to be 1
+            var pageNumber = page ?? 1;
+            var pageSize = 6;
+
+            var blogs = await _dbContext.Blogs.OrderBy(b => b.Created).ToPagedListAsync(pageNumber, pageSize);
+            return View(blogs);
         }
 
         public IActionResult ContactMe()

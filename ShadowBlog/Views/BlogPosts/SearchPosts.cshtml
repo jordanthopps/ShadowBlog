@@ -68,14 +68,14 @@
         </div>
         <<hr />
         <div class="row">
-            @*PAGINATION VIEW*@
+            <!--@*PAGINATION VIEW*@-->
             <<div class="col">
                 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
             </div>
         </div>
         <div class="row">
             <div class="col">
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+                @Html.PagedListPager(Model, page => Url.Action("SearchPosts", new { page = page, searchTerm = ViewBag.SearchTerm }),
                         new PagedListRenderOptions
                         {
                             LiElementClasses = new string[] { "page-item" },
