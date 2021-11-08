@@ -10,8 +10,8 @@ using ShadowBlog.Data;
 namespace ShadowBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211103190137_Initial")]
-    partial class Initial
+    [Migration("20211108150704__Intial")]
+    partial class _Intial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

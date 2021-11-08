@@ -61,7 +61,7 @@ namespace ShadowBlog.Controllers
             return View(await blogPosts.ToPagedListAsync(pageNumber, pageSize));
         }
 
-        public async Task<IActionResult> ChildIndex(int blogId)
+        public async Task<IActionResult> ChildIndex(int blogId, int? page)
         {
             //I don't want to get all of the BlogPosts...
             //I want to get all of the BlogPosts where the BlogId = blogId
@@ -71,7 +71,10 @@ namespace ShadowBlog.Controllers
                 .Where(b => b.BlogId == blogId && b.ReadyStatus == ReadyState.ProductionReady)
                 .OrderByDescending(b => b.Created);
 
-            return View( await blogPosts.ToListAsync());
+            var pageNumber = page ?? 1;
+            var pageSize = 6;
+
+            return View( await blogPosts.ToPagedListAsync(pageNumber, pageSize));
         }
 
         // GET: BlogPosts

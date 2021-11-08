@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ShadowBlog.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class _Intial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -66,7 +66,7 @@
                 <a class="btn btn-gray-border" href="home-2.html">LOAD MORE POSTS</a>
             </div>
         </div>
-        <<hr />
+        <hr />
         <div class="row">
             @*PAGINATION VIEW*@
             <<div class="col">
@@ -75,7 +75,7 @@
         </div>
         <div class="row">
             <div class="col">
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+                @Html.PagedListPager(Model, page => Url.Action("ChildIndex", new { page = page, blogId = Model.FirstOrDefault()?.BlogId }),
                         new PagedListRenderOptions
                         {
                             LiElementClasses = new string[] { "page-item" },
