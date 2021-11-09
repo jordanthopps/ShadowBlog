@@ -17,5 +17,6 @@ namespace ShadowBlog.Data
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<BlogPost> BlogPosts { get; set; }
         public DbSet<Comment> Comment { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }

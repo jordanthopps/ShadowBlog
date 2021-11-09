@@ -78,6 +78,13 @@ namespace ShadowBlog
 
             app.UseEndpoints(endpoints =>
             {
+                //Custom route goes first...
+                //Route definitions need to go from most specific to most generalized.
+                endpoints.MapControllerRoute(
+                    name: "slugRoute",
+                    pattern: "JordansBlog/PostDetails/{slug}",
+                    defaults: new { controller = "BlogPosts", action = "Details"});
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

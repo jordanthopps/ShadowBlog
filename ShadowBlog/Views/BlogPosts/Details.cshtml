@@ -56,6 +56,19 @@
                                 </div>
                             </div>
                         </div>
+
+                        <article>
+                            <hr />
+                            <h3 class="text-center fw-bold">Tags</h3>
+                            <div class="col text-center">
+                                @foreach (var tag in Model.Tags)
+                                {
+                                    <a asp-action="TagIndex" asp-route-tag="@tag.Text" class="btn btn-sm btn-warning btn-outline-dark">#@tag.Text</a>
+                                }
+                            </div>
+                            <hr />
+                        </article>
+
                         <div class="comments-inner-wrap">
                             <h3 class="comments-title mt-5">Leave A Reply</h3>
                             <!-- COMMENT FORM -->

@@ -49,7 +49,7 @@
                     </div>
                     <div class="blog-post-item-wrap">
                         <div class="post-content">
-                            <h4><a asp-controller="BlogPosts" asp-action="Details" asp-route-slug="@blogPost.Slug">@blogPost.Title</a></h4>
+                            <h4><a asp-controller="BlogPosts" asp-action="Details" asp-route-id="@blogPost.Id">@blogPost.Title</a></h4>
                             <p>@blogPost.Abstract</p>
                             <div class="post-meta">
                                 <ul>
@@ -66,16 +66,16 @@
                 <a class="btn btn-gray-border" href="home-2.html">LOAD MORE POSTS</a>
             </div>
         </div>
-        <hr />
+        <<hr />
         <div class="row">
-            @*PAGINATION VIEW*@
+            <!--@*PAGINATION VIEW*@-->
             <<div class="col">
                 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
             </div>
         </div>
         <div class="row">
             <div class="col">
-                @Html.PagedListPager(Model, page => Url.Action("ChildIndex", new { page = page, blogId = Model.FirstOrDefault()?.BlogId }),
+                @Html.PagedListPager(Model, page => Url.Action("TagIndex", new { page = page, tag = ViewBag.Tag }),
                         new PagedListRenderOptions
                         {
                             LiElementClasses = new string[] { "page-item" },
