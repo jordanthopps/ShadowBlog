@@ -49,7 +49,7 @@
                     </div>
                     <div class="blog-post-item-wrap">
                         <div class="post-content">
-                            <h4><a asp-controller="BlogPosts" asp-action="Details" asp-route-id="@blogPost.Id">@blogPost.Title</a></h4>
+                            <h4><a asp-controller="BlogPosts" asp-action="Details" asp-route-slug="@blogPost.Slug">@blogPost.Title</a></h4>
                             <p>@blogPost.Abstract</p>
                             <div class="post-meta">
                                 <ul>

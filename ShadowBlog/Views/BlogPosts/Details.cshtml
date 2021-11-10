@@ -77,6 +77,7 @@
                                 <form class="comment-form" asp-controller="Comments" asp-action="Create">
                                     <div class="form-group">
                                         <input type="hidden" name="BlogPostId" value="@Model.Id" />
+                                        <input type="hidden" name="Slug" value="@Model.Slug" />
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="single-input-wrap d-flex w-100">
@@ -146,6 +147,7 @@
                 <div class="modal-body">
                     <form asp-controller="Comments" asp-action="Edit">
                         <input type="hidden" id="ModalCommentId" name="CommentId" />
+                        <input type="hidden" name="Slug" value="@Model.Slug" />
                         <textarea id="ModalCommentBody" name="Body" rows="5" class="w-100"></textarea>
                         <button class="btn btn-dark w-100" type="submit">Submit</button>
                     </form>

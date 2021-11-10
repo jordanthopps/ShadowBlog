@@ -58,7 +58,7 @@ namespace ShadowBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogPostId,CommentBody")] Comment comment)
+        public async Task<IActionResult> Create([Bind("BlogPostId,CommentBody")] Comment comment, string slug)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +72,7 @@ namespace ShadowBlog.Controllers
                 //return RedirectToAction(nameof(Index));
 
                 //Return the user back to the Details page
-                return RedirectToAction("Details", "BlogPosts", new { id = comment.BlogPostId });
+                return RedirectToAction("Details", "BlogPosts", new { slug });
 
             }
 
@@ -103,7 +103,7 @@ namespace ShadowBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int commentId, string body)
+        public async Task<IActionResult> Edit(int commentId, string body, string slug)
         {
             if (commentId == 0)
                 return NotFound();
@@ -114,7 +114,7 @@ namespace ShadowBlog.Controllers
                 comment.CommentBody = body;
                 comment.Updated = DateTime.Now;
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "BlogPosts", new { id = comment.BlogPostId }, "fragComment");
+                return RedirectToAction("Details", "BlogPosts", new { slug }, "fragComment");
             }
             catch (DbUpdateConcurrencyException)
             {
