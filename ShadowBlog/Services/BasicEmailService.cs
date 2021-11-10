@@ -22,10 +22,10 @@ namespace ShadowBlog.Services
         {
             var newEmail = new MimeMessage(); //represents the whole message
             //MIME stands for Multipurpose Internet Mail Extensions
-
+            
             //First needs to talk to appsettings.json by injecting an instance of iConfig (above)
             var emailAddress = _configuration["SmtpSettings:Email"];
-            newEmail.Sender = MailboxAddress.Parse(_configuration["SmtpSettings:Email"]);
+            newEmail.Sender = MailboxAddress.Parse(emailAddress);
             newEmail.To.Add(MailboxAddress.Parse(email));
             newEmail.Subject = subject;
 

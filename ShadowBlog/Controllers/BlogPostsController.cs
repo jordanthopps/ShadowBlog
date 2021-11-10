@@ -123,7 +123,7 @@ namespace ShadowBlog.Controllers
 
         public async Task<IActionResult> TagIndex(string tag, int? page)
         {
-            //Start with my pageing data
+            //Start with my paging data
             var pageNumber = page ?? 1;
             var pageSize = 6;
 
@@ -253,7 +253,7 @@ namespace ShadowBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,ReadyStatus,Slug,ImageData,ImageType,Image")] BlogPost blogPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,ReadyStatus,Slug,ImageData,ImageType,Image")] BlogPost blogPost, List<string> tagValues)
         {
             if (id != blogPost.Id)
             {
@@ -293,6 +293,19 @@ namespace ShadowBlog.Controllers
                         throw;
                     }
                 }
+
+                //foreach loop for tagValues goes here.
+                foreach (var tag in tagValues)
+                {
+                    _context.Add(new Tag()
+                    {
+                        BlogPostId = blogPost.Id,
+                        Text = tag
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", blogPost.BlogId);

@@ -31,6 +31,7 @@ namespace ShadowBlog.Services
                 //I am using an intermediate variable to hold all possible BlogPosts
                 posts = await _dbContext.BlogPosts
                     .Include(b => b.Blog)
+                    .Include(t => t.Tags)
                     .Include(b => b.Comments)
                     .ThenInclude(c => c.BlogUser)
                     .Where(b => b.ReadyStatus == ReadyState.ProductionReady)
@@ -38,6 +39,7 @@ namespace ShadowBlog.Services
 
                 posts = posts.Where(p => p.Title.ToLower().Contains(searchTerm) ||
                             p.Abstract.ToLower().Contains(searchTerm) ||
+                            p.Tags.Any(t => t.Text.ToLower().Contains(searchTerm)) ||
                             p.Content.ToLower().Contains(searchTerm) ||
                             p.Comments.Any(c => c.CommentBody.ToLower().Contains(searchTerm) ||
                                                 c.BlogUser.FullName.ToLower().Contains(searchTerm))).ToList();
@@ -47,5 +49,6 @@ namespace ShadowBlog.Services
             return posts;
 
         }
+
     }
 }

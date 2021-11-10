@@ -471,7 +471,7 @@ namespace ShadowBlog.Data.Migrations
             modelBuilder.Entity("ShadowBlog.Models.Tag", b =>
                 {
                     b.HasOne("ShadowBlog.Models.BlogPost", "BlogPost")
-                        .WithMany("Tag")
+                        .WithMany("Tags")
                         .HasForeignKey("BlogPostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -483,7 +483,7 @@ namespace ShadowBlog.Data.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Tag");
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

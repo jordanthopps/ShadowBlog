@@ -19,12 +19,12 @@ namespace ShadowBlog.Models
 
         //Descriptive Properties of a blogpost
         [Required]
-        [StringLength(50, ErrorMessage = "You messed up", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "Minimum title length hasn't been met.", MinimumLength = 5)]
         public string Title { get; set; }
 
         //A property to get the user interested without forcing them to read the entire post...
         [Required]
-        [StringLength(200, ErrorMessage = "You messed up", MinimumLength = 50)]
+        [StringLength(200, ErrorMessage = "Minimum length for the abstract section hasn't been met", MinimumLength = 50)]
         public string Abstract { get; set; }
 
         [Required]

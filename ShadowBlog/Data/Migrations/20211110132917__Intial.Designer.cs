@@ -10,7 +10,7 @@ using ShadowBlog.Data;
 namespace ShadowBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211108150704__Intial")]
+    [Migration("20211110132917__Intial")]
     partial class _Intial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -363,6 +363,28 @@ namespace ShadowBlog.Data.Migrations
                     b.ToTable("Comment");
                 });
 
+            modelBuilder.Entity("ShadowBlog.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("BlogPostId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogPostId");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -448,9 +470,22 @@ namespace ShadowBlog.Data.Migrations
                     b.Navigation("Moderator");
                 });
 
+            modelBuilder.Entity("ShadowBlog.Models.Tag", b =>
+                {
+                    b.HasOne("ShadowBlog.Models.BlogPost", "BlogPost")
+                        .WithMany("Tags")
+                        .HasForeignKey("BlogPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BlogPost");
+                });
+
             modelBuilder.Entity("ShadowBlog.Models.BlogPost", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }
