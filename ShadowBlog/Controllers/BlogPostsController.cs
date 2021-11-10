@@ -111,6 +111,8 @@ namespace ShadowBlog.Controllers
                 .Include(b => b.Tags)
                 .Include(b => b.Comments)
                 .ThenInclude(c => c.BlogUser)
+                .Include(b => b.Comments)
+                .ThenInclude(c => c.Moderator)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
 
             if (blogPost == null)
