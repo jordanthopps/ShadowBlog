@@ -1,0 +1,29 @@
+﻿.navbar-nav {
+    opacity: unset;
+    visibility: unset;
+    margin-left: 12px;
+    text-align: start;
+}
+
+.btn {
+    height: 60px;
+    line-height: 60px;
+    padding: 0 30px;
+    overflow: hidden;
+    position: relative;
+    border: 0;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    font-weight: unset;
+    font-size: 12px;
+    display: inline-block;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    border-radius: 0;
+}
+
+
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: unset;
+    padding-left: 0.5rem;
+}

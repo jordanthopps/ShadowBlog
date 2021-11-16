@@ -10,10 +10,6 @@
     <!--favicon icon-->
     @*<link rel="icon" href="assets/img/fevicon.png">*@
 
-    <!--Bootstrap | I put this in-->
-    @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">*@
-
-
     <!--Google Fonts-->
     <link href="https://fonts.googleapis.com/css2?family=Khula:wght@400;600&family=Lustria&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
@@ -27,6 +23,7 @@
     <link href="~/css/responsive.css" rel="stylesheet" />
     <link href="~/css/slick-slide.min.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/Custom.css" rel="stylesheet" />
 
 </head>
 <body class='sc5'>
@@ -44,15 +41,6 @@
     <!-- preloader area end -->
     <div class="body-overlay" id="body-overlay"></div>
 
-    <!-- search popup form area start -->
-    @*<div class="search-popup" id="search-popup">
-            <form asp-action="SearchPosts" asp-controller="BlogPosts" class="search-form">
-                <div class="form-group">
-                    <input type="text" name="searchTerm" class="form-control" placeholder="Search.....">
-                </div>
-                <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
-            </form>
-        </div>*@
     <!-- //. search Popup -->
     <!-- navbar start -->
     <!--Side Nav Menu-->
@@ -109,28 +97,9 @@
                             <li>
                                 <a asp-controller="Home" asp-action="ContactMe">Contact</a>
                             </li>
-                            <li class="current-menu-item menu-item-has-children">
-                                Account
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a asp-area="Identity" asp-page="/Account/Login">Login</a>
-                                    </li>
-                                    <li>
-                                        <a asp-area="Identity" asp-page="/Account/Manage/Index">Manage Account</a>
-                                    </li>
-                                    <li>
-                                        <a asp-area="Identity" asp-page="/Account/Register">Register</a>
-                                    </li>
-                                    <li>
-                                        <a asp-area="Identity" asp-page="/Account/Logout">Logout</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fab fa-github"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
                         </ul>
-                        <form asp-action="SearchPosts" asp-controller="BlogPosts" class="input-group rounded w-50 px-4">
+                        <div class="navbar-nav menu-open text-start"><partial name="_LoginPartial" /></div>
+                        <form asp-action="SearchPosts" asp-controller="BlogPosts" class="input-group rounded w-100 px-4">
                             <input type="search" class="form-control rounded" placeholder="Search..." aria-label="Search"
                                    aria-describedby="search-addon" name="searchTerm" />
                             <button class="input-group-text border-0" type="submit" id="search-addon">
@@ -174,17 +143,11 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="footer-widget widget widget_link">
-                            <h4 class="widget-title">Popular tags</h4> <!--TODO: Decide if you're keeping this div section-->
+                            <h4 class="widget-title">Explore tags</h4>
                             <ul>
-                                <li><a href="home-3.html">#TRAVEL</a></li>
-                                <li><a href="home-3.html">#LIFE</a></li>
-                                <li><a href="home-3.html">#LAKE</a></li>
-                                <li><a href="home-3.html">#VLOGOS</a></li>
-                                <li><a href="home-3.html">#ALTEGO</a></li>
-                                <li><a href="home-3.html">#MONACO</a></li>
-                                <li><a href="home-3.html">#SELECTED</a></li>
-                                <li><a href="home-3.html">#HELLO</a></li>
-                                <li><a href="home-3.html">#ITSON</a></li>
+                                <li><a href="home-3.html">#Brass Tacks C#</a></li>
+                                <li><a href="home-3.html">#How To:</a></li>
+                                <li><a href="home-3.html">#Versus</a></li>
                             </ul>
                         </div>
                     </div>
@@ -197,8 +160,6 @@
     <div class="back-to-top">
         <a href="#"><span class="back-top"><i class="fas fa-angle-double-up"></i></span></a>
     </div>
-
-
 
     <!-- all plugins here -->
     <script src="~/js/jquery.3.6.min.js"></script>
@@ -214,14 +175,16 @@
     <script src="~/js/owl.min.js"></script>
     <script src="~/js/slick-slider.min.js"></script>
     <script src="~/js/wow.min.js"></script>
-    <script src="~/js/jhcustom.js"></script>
+
     <!-- main js  -->
     <script src="~/js/main.js"></script>
+
+    <!--My Custom JS-->
+    <script src="~/js/jhcustom.js"></script>
 
     <!-- JavaScript Bundle with Popper | I put this in-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
-
 
     <!--Tiny MCE-->
     <script src="https://cdn.tiny.cloud/1/6q3jild435pb80zy4oolee7eb53rppqg5te34ccqfh85haoy/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>

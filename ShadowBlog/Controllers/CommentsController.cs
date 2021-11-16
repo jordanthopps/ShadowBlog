@@ -132,7 +132,7 @@ namespace ShadowBlog.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Moderate(int commentId, int ModerationType, string moderatedBody)
+        public async Task<IActionResult> Moderate(int commentId, int ModerationType, string moderatedBody, string slug)
         {
             var comment = await _context.Comment.FindAsync(commentId);
             comment.Moderated = DateTime.Now;
@@ -141,7 +141,7 @@ namespace ShadowBlog.Controllers
             comment.ModeratedBody = moderatedBody;
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "BlogPosts", new { id = comment.BlogPostId });
+            return RedirectToAction("Details", "BlogPosts", new { slug });
         }
 
 

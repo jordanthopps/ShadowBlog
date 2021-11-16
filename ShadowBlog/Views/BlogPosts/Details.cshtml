@@ -78,45 +78,45 @@
                                         </div>
                                     </div>
                                 </form>
+                                <div class="row">
+                                    <h2>Comments</h2>
+                                    @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+                                    {
+                                        <div class="offset-1 col-10">
+                                            <div class="media mb-2">
+                                                @if (comment.Moderated is not null)
+                                                {
+                                                    <h5 class="mt-0">Moderated by @comment.Moderator.FullName on @comment.Moderated?.ToString("MMM dd, yyyy")</h5>
+                                                    <h6 class="mt-0"><i>Moderated reason: @comment.ModerationType</i></h6>
+                                                    <p>@comment.ModeratedBody</p>
+                                                }
+                                                else if (comment.Updated is not null)
+                                                {
+                                                    <h5 class="mt-0">Updated by @comment.BlogUser.FullName on @comment.Updated?.ToString("MMM dd, yyyy")</h5>
+                                                    <p>@comment.CommentBody</p>
+                                                    <button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>
+                                                }
+                                                else
+                                                {
+                                                    <h5 class="mt-0">Created by @comment.BlogUser.FullName on @comment.Created.ToString("MMM dd, yyyy")</h5>
+                                                    <p>@comment.CommentBody</p>
+                                                    <button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>
+                                                }
+
+                                                @if (User.IsInRole("Moderator")) //If the user is a moderator, displays the Moderate button on the edit
+                                                {
+                                                    <button class="btn btn-danger px-3 btnModerate" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#ModerateModal">Moderate</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
                             }
                             else
                             {
                                 //If the user is not logged in, I will prompt them to login in order to see the create comment form.
-                                <a class="btn btn-lg btn-dark btn-block w-100" returnUrl="" asp-area="Identity" asp-page="/Account/Login">Log In to add a comment</a>
+                                <a class="btn btn-lg btn-dark btn-block w-100" asp-route-returnUrl="@Url.Action("Details", "BlogPosts", new { slug = Model.Slug }, null, null, "fragComment")" asp-area="Identity" asp-page="/Account/Login">Log In to add a comment</a>
                             }
-                            <div class="row">
-                                <h2>Comments</h2>
-                                @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
-                                {
-                                    <div class="offset-1 col-10">
-                                        <div class="media mb-2">
-                                            @if (comment.Moderated is not null)
-                                            {
-                                                <h5 class="mt-0">Moderated by @comment.Moderator.FullName on @comment.Moderated?.ToString("MMM dd, yyyy")</h5>
-                                                <h6 class="mt-0"><i>Moderated reason: @comment.ModerationType</i></h6>
-                                                <p>@comment.ModeratedBody</p>
-                                            }
-                                            else if (comment.Updated is not null)
-                                            {
-                                                <h5 class="mt-0">Updated by @comment.BlogUser.FullName on @comment.Updated?.ToString("MMM dd, yyyy")</h5>
-                                                <p>@comment.CommentBody</p>
-                                                <button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>
-                                            }
-                                            else
-                                            {
-                                                <h5 class="mt-0">Created by @comment.BlogUser.FullName on @comment.Created.ToString("MMM dd, yyyy")</h5>
-                                                <p>@comment.CommentBody</p>
-                                                <button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>
-                                            }
-
-                                            @if (User.IsInRole("Moderator")) //If the user is a moderator, displays the Moderate button on the edit 
-                                            {
-                                                <button class="btn btn-danger px-3 btnModerate" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#ModerateModal">Moderate</button>
-                                            }
-                                        </div>
-                                    </div>
-                                }
-                            </div>
                             <!-- ./COMMENT FORM -->
                         </div>
                     </div>
@@ -157,6 +157,7 @@
                 <div class="modal-body">
                     <form asp-controller="Comments" asp-action="Moderate">
                         <input type="hidden" id="ModerateModalCommentId" name="CommentId" />
+                        <input type="hidden" name="Slug" value="@Model.Slug" />
                         <select name="ModerationType" asp-items="@Html.GetEnumSelectList<ModType>()"></select>
                         <textarea id="ModalModeratedBody" name="ModeratedBody" rows="5" class="w-100"></textarea>
                         <button class="btn btn-danger w-100" type="submit">Submit</button>
@@ -192,40 +193,3 @@
     }
 </section>
 <!-- latest post Area End -->
-<!-- instagram Area Start-->
-<div class="instagram-area">
-    <div class="instagram-slider owl-carousel">
-        <div class="item">
-            <a href="#">
-                <img src="assets/img/instagram/1.jpg" alt="img">
-            </a>
-        </div>
-        <div class="item">
-            <a href="#">
-                <img src="assets/img/instagram/2.jpg" alt="img">
-            </a>
-        </div>
-
-        <div class="item">
-            <a href="#">
-                <img src="assets/img/instagram/3.jpg" alt="img">
-            </a>
-        </div>
-        <div class="item">
-            <a href="#">
-                <img src="assets/img/instagram/4.jpg" alt="img">
-            </a>
-        </div>
-        <div class="item">
-            <a href="#">
-                <img src="assets/img/instagram/5.jpg" alt="img">
-            </a>
-        </div>
-        <div class="item">
-            <a href="#">
-                <img src="assets/img/instagram/6.jpg" alt="img">
-            </a>
-        </div>
-    </div>
-</div>
-<!-- instagram Area End --> 
