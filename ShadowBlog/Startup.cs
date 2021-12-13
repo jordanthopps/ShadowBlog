@@ -102,7 +102,7 @@ namespace ShadowBlog
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShadowBlogAPI");
-                c.RoutePrefix = "";
+                //c.RoutePrefix = "";
             });
 
             app.UseRouting();
