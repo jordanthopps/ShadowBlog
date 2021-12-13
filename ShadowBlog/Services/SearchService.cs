@@ -33,7 +33,7 @@ namespace ShadowBlog.Services
                     .Include(b => b.Blog)
                     .Include(t => t.Tags)
                     .Include(b => b.Comments)
-                    .ThenInclude(c => c.BlogUser)
+                        .ThenInclude(c => c.BlogUser)
                     .Where(b => b.ReadyStatus == ReadyState.ProductionReady)
                     .ToListAsync();
 

@@ -35,7 +35,7 @@ namespace ShadowBlog.Controllers
         //[ValidateAntiForgeryToken]
         //public async Task<IActionResult> SearchPosts(string searchTerm)
         //{
-        //    //I have to write code that uses thisd searchTerm to find
+        //    //I have to write code that uses this searchTerm to find
         //    //the list of BlogPosts and then push them into a View...
 
         //    //Create, Register and Inject and instance of SearchService
