@@ -85,10 +85,10 @@ namespace ShadowBlog.Services
             //TODO: Seed a User who will occupy the Moderator role
             BlogUser mod = new()
             {
-                Email = "MoiraRose@Mailinator.com",
-                UserName = "MoiraRose@Mailinator.com",
-                FirstName = "Moira",
-                LastName = "Rose",
+                Email = "CoderFoundryDevs@Mailinator.com",
+                UserName = "CoderFoundryDevs@Mailinator.com",
+                FirstName = "Coder",
+                LastName = "Foundry",
                 PhoneNumber = "555-5555",
                 EmailConfirmed = true,
                 ImageData = await _imageService.EncodeImageAsync("generic-user-purpbg.png"),
@@ -106,7 +106,7 @@ namespace ShadowBlog.Services
             if (_dbContext.Blogs.Any())
                 return;
 
-            for (var loop = 1; loop <= 20; loop++)
+            for (var loop = 1; loop <= 1; loop++)
             {
                 _dbContext.Add(new Blog()
                 {
@@ -126,7 +126,7 @@ namespace ShadowBlog.Services
                 return;
 
             var blogId = (await _dbContext.Blogs.AsNoTracking().OrderBy(b => b.Created).FirstOrDefaultAsync()).Id;
-            for (var loop = 1; loop <= 20; loop++)
+            for (var loop = 1; loop <= 1; loop++)
             {
                 var title = $"Post number {loop}";
                 _dbContext.Add(new BlogPost()
