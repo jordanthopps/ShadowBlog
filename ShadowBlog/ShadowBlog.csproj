@@ -38,4 +38,9 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\HowTo\" />
+    <Folder Include="wwwroot\img\BrassTacks\" />
+  </ItemGroup>
+
 </Project>
