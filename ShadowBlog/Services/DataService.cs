@@ -113,7 +113,7 @@ namespace ShadowBlog.Services
                     Name = $"Blog for Application {loop}",
                     Description = $"Everything I learned while assembling the Portfolio Application {loop}",
                     Created = DateTime.Now.AddDays(loop),
-                    ImageData = await _imageService.EncodeImageAsync("BlogDefaultImage.jpg"),
+                    ImageData = await _imageService.EncodeImageAsync("BlogTitleCard.jpg"),
                     ContentType = "jpg"
                 });
             }
