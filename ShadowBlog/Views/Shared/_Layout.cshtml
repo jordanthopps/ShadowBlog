@@ -1,12 +1,4 @@
-﻿@using X.PagedList
-@using ShadowBlog.Models
-@using ShadowBlog.Services.Interfaces
-@using X.PagedList.Mvc.Core
-@using X.PagedList.Web.Common
-@inject IImageService _imageService
-@model IPagedList<Blog>
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zxx">
 <head>
     <meta charset="UTF-8">
@@ -96,11 +88,9 @@
                     </div>
                     <div class="collapse navbar-collapse" id="themefie_main_menu">
                         <ul class="navbar-nav menu-open text-end">
-                            @foreach (var blog in Model)
-                            {
                             <li>
-                                <a asp-controller="Blogposts" asp-action="ChildIndex" asp-route-blogId="@blog.Id">Home</a>
-                            </li>}
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
                             <li>
                                 <a href="https://jordanthopps.netlify.app/#about" target="_blank">About</a>
                             </li>
