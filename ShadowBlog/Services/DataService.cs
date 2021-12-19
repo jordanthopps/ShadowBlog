@@ -69,8 +69,8 @@ namespace ShadowBlog.Services
 
             BlogUser admin = new()
             {
-                Email = "JordanTaylor@Mailinator.com",
-                UserName = "JordanTaylor@Mailinator.com",
+                Email = "dev.jordanhopps@gmail.com",
+                UserName = "dev.jordanhopps@gmail.com",
                 FirstName = "Jordan",
                 LastName = "Taylor",
                 PhoneNumber = "555-5555",
