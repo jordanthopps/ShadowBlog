@@ -43,10 +43,10 @@ namespace ShadowBlog.Services
             await SeedUsersAsync();
 
             //Step 3: Seed Blogs -- For paging purposes ...
-            await SeedBlogsAsync();
+            //await SeedBlogsAsync();
 
             //Step 4: Seed Posts -- For purposes of working with paging and forwarding the search term
-            await SeedBlogPostsAsync();
+            //await SeedBlogPostsAsync();
            
         }
 
@@ -101,48 +101,48 @@ namespace ShadowBlog.Services
         }
 
 
-        private async Task SeedBlogsAsync()
-        {
-            if (_dbContext.Blogs.Any())
-                return;
+        //private async Task SeedBlogsAsync()
+        //{
+        //    if (_dbContext.Blogs.Any())
+        //        return;
 
-            for (var loop = 1; loop <= 1; loop++)
-            {
-                _dbContext.Add(new Blog()
-                {
-                    Name = $"Blog for Application {loop}",
-                    Description = $"Everything I learned while assembling the Portfolio Application {loop}",
-                    Created = DateTime.Now.AddDays(loop),
-                    ImageData = await _imageService.EncodeImageAsync("BlogTitleCard.jpg"),
-                    ContentType = "jpg"
-                });
-            }
-            await _dbContext.SaveChangesAsync();
-        }
+        //    for (var loop = 1; loop <= 1; loop++)
+        //    {
+        //        _dbContext.Add(new Blog()
+        //        {
+        //            Name = $"Blog for Application {loop}",
+        //            Description = $"Everything I learned while assembling the Portfolio Application {loop}",
+        //            Created = DateTime.Now.AddDays(loop),
+        //            ImageData = await _imageService.EncodeImageAsync("BlogTitleCard.jpg"),
+        //            ContentType = "jpg"
+        //        });
+        //    }
+        //    await _dbContext.SaveChangesAsync();
+        //}
 
-        private async Task SeedBlogPostsAsync()
-        {
-            if (_dbContext.BlogPosts.Any())
-                return;
+        //private async Task SeedBlogPostsAsync()
+        //{
+        //    if (_dbContext.BlogPosts.Any())
+        //        return;
 
-            var blogId = (await _dbContext.Blogs.AsNoTracking().OrderBy(b => b.Created).FirstOrDefaultAsync()).Id;
-            for (var loop = 1; loop <= 1; loop++)
-            {
-                var title = $"Post number {loop}";
-                _dbContext.Add(new BlogPost()
-                {
-                    BlogId = blogId,
-                    Title = title,
-                    ReadyStatus = Enums.ReadyState.ProductionReady,
-                    Slug = _slugService.UrlFriendly(title),
-                    Abstract = $"Abstract for Posts number {loop}",
-                    Content = $"Content of Post number {loop}",
-                    Created = DateTime.Now.AddDays(loop),
-                    ImageData = await _imageService.EncodeImageAsync("BlogPostDefaultImage.jpg"),
-                    ImageType = "jpg"
-                });
-            }
-            await _dbContext.SaveChangesAsync();
-        }
+        //    var blogId = (await _dbContext.Blogs.AsNoTracking().OrderBy(b => b.Created).FirstOrDefaultAsync()).Id;
+        //    for (var loop = 1; loop <= 1; loop++)
+        //    {
+        //        var title = $"Post number {loop}";
+        //        _dbContext.Add(new BlogPost()
+        //        {
+        //            BlogId = blogId,
+        //            Title = title,
+        //            ReadyStatus = Enums.ReadyState.ProductionReady,
+        //            Slug = _slugService.UrlFriendly(title),
+        //            Abstract = $"Abstract for Posts number {loop}",
+        //            Content = $"Content of Post number {loop}",
+        //            Created = DateTime.Now.AddDays(loop),
+        //            ImageData = await _imageService.EncodeImageAsync("BlogPostDefaultImage.jpg"),
+        //            ImageType = "jpg"
+        //        });
+        //    }
+        //    await _dbContext.SaveChangesAsync();
+        //}
     }
 }
