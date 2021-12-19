@@ -280,6 +280,9 @@ namespace ShadowBlog.Controllers
                             blogPost.Slug = slug;
                         }
                     }
+
+                    //TODO:Image Upload
+
                     blogPost.Updated = DateTime.Now;
                     _context.Update(blogPost);
                     await _context.SaveChangesAsync();

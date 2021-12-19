@@ -69,7 +69,7 @@ namespace ShadowBlog
                     {
                         Name = "Jordan Hopps",
                         Email = "dev.jordanhopps@gmail.com",
-                        Url = new Uri("https://heroku-shadow-blog.herokuapp.com/")
+                        Url = new Uri("https://heroku-shadow-blog.herokuapp.com")
                     }
                 });
 
@@ -121,7 +121,8 @@ namespace ShadowBlog
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=BlogPosts}/{action=ChildIndex}/{blogid=1}");
+                    //pattern: "{controller=BlogPosts}/{action=ChildIndex}/{blogid=1}");
+                    pattern: "{controller=Home}/{action=Index}/{id=?}");
                 endpoints.MapRazorPages();
             });
         }
