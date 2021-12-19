@@ -78,6 +78,16 @@ namespace ShadowBlog
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            //Configure a CORS policy
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DefaultCorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader());
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,6 +114,9 @@ namespace ShadowBlog
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShadowBlogAPI");
                 //c.RoutePrefix = "";
             });
+
+            //Use the defined policy from ConfigureServices
+            app.UseCors("DefaultCorsPolicy");
 
             app.UseRouting();
 
