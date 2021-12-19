@@ -121,7 +121,7 @@ namespace ShadowBlog
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Blogposts}/{action=ChildIndex}/{id?}");
+                    pattern: "{controller=BlogPosts}/{action=ChildIndex}/{blogid=1}");
                 endpoints.MapRazorPages();
             });
         }
