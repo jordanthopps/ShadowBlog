@@ -84,8 +84,8 @@ namespace ShadowBlog
             {
                 options.AddPolicy("DefaultCorsPolicy",
                     builder => builder.AllowAnyOrigin()
-                                      .AllowAnyMethod()
-                                      .AllowAnyHeader());
+                                        .AllowAnyMethod()
+                                        .AllowAnyHeader());
 
             });
         }
