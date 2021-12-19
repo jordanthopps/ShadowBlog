@@ -122,7 +122,7 @@ namespace ShadowBlog
                 endpoints.MapControllerRoute(
                     name: "default",
                     //pattern: "{controller=BlogPosts}/{action=ChildIndex}/{blogid=1}");
-                    pattern: "{controller=Home}/{action=Index}/{id=?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
