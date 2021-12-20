@@ -117,7 +117,7 @@ h6 {
 }
 
 p {
-  color: var(--paragraph-color);
+  color: #4a4a4a;
   -webkit-hyphens: auto;
   -ms-hyphens: auto;
   hyphens: auto;
