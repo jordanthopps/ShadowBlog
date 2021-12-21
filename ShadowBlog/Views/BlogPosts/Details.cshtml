@@ -19,7 +19,7 @@
                     @*<div class="thumb pd-bottom-45">
             <img class="w-100" src="assets/img/post/single.jpg" alt="img ">
         </div>*@
-                    <div class="row justify-content-center">
+                    <div class="pt-4 row justify-content-center">
                         <div class="col-lg-10">
                             <div class="post-content text-center pt-0 mb-4">
                                 <h2><a href="#">@Model.Title</a></h2>
@@ -78,28 +78,28 @@
                                     </div>
                                 </form>
                                 <div class="row">
-                                    <h2>Comments</h2>
+                                    <h2 class="pt-5 border-bottom">Comments</h2>
                                     @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
                                     {
-                                        <div class="offset-1 col-10">
+                                        <div class=" col-10">
                                             <div class="media mb-2">
                                                 @if (comment.Moderated is not null)
                                                 {
-                                                    <h5 class="mt-0">Moderated by @comment.Moderator.FullName on @comment.Moderated?.ToString("MMM dd, yyyy")</h5>
-                                                    <h6 class="mt-0"><i>Moderated reason: @comment.ModerationType</i></h6>
-                                                    <p>@comment.ModeratedBody</p>
+                                                <p class="mt-0 text-danger"><strong>Moderated by @comment.Moderator.FullName on @comment.Moderated?.ToString("MMM dd, yyyy") | Reason: @comment.ModerationType</strong></p>
+                                                    @*<h6 class="mt-0"><i>Moderated </i></h6>*@
+                                                    <h6>@comment.ModeratedBody</h6>
                                                 }
                                                 else if (comment.Updated is not null)
                                                 {
-                                                    <h5 class="mt-0">Updated by @comment.BlogUser.FullName on @comment.Updated?.ToString("MMM dd, yyyy")</h5>
-                                                    <p>@comment.CommentBody</p>
-                                                    <button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>
+                                                    <p class="mt-0"><strong>Updated by @comment.BlogUser.FullName on @comment.Updated?.ToString("MMM dd, yyyy")</strong></p>
+                                                    <h6>@comment.CommentBody</h6><br />
+                                                    @*<button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>*@
                                                 }
                                                 else
                                                 {
-                                                    <h5 class="mt-0">Created by @comment.BlogUser.FullName on @comment.Created.ToString("MMM dd, yyyy")</h5>
-                                                    <p>@comment.CommentBody</p>
-                                                    <button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>
+                                                    <p class="mt-0"><strong>@comment.BlogUser.FullName on @comment.Created.ToString("MMM dd, yyyy")</strong></p>
+                                                    <h6>@comment.CommentBody</h6><br />
+                                                    @*<button class="btn btn-dark px-3 btnEdit" data-bs-toggle="modal" data-UserCommentId="@comment.Id" data-bs-target="#EditModal">Edit</button>*@
                                                 }
 
                                                 @if (User.IsInRole("Moderator")) //If the user is a moderator, displays the Moderate button on the edit
