@@ -18,14 +18,12 @@ namespace ShadowBlog.Services
             _configuration = configuration;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string htmlMessage) //email just represents the email address
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var newEmail = new MimeMessage(); //represents the whole message
-            //MIME stands for Multipurpose Internet Mail Extensions
-            
-            //First needs to talk to appsettings.json by injecting an instance of iConfig (above)
-            var emailAddress = _configuration["SmtpSettings:Email"];
-            newEmail.Sender = MailboxAddress.Parse(emailAddress);
+            var newEmail = new MimeMessage();
+
+            //I need to talk to appsettings.json
+            newEmail.Sender = MailboxAddress.Parse(_configuration["SmtpSettings:Email"]);
             newEmail.To.Add(MailboxAddress.Parse(email));
             newEmail.Subject = subject;
 
@@ -33,12 +31,26 @@ namespace ShadowBlog.Services
             body.HtmlBody = htmlMessage;
             newEmail.Body = body.ToMessageBody();
 
+            //This is example code from an old implementation but could be used to get the ball rolling...
+            //if (newEmail.Attachments != null)
+            //{
+            //    byte[] fileBytes;
+            //    foreach (var file in newEmail.Attachments)
+            //    {
+            //        using var ms = new MemoryStream()
+            //        file.CopyTo(ms);
+            //        fileBytes = ms.ToArray();
+
+            //        builder.Attachments.Add(file.FileName, fileBytes, ContentType.Parse(file.ContentType));
+            //    }
+            //}
+
             //Configure the SMTP server to send the newEmail
             using SmtpClient smtpClient = new();
             var host = _configuration["SmtpSettings:Host"];
             var port = Convert.ToInt32(_configuration["SmtpSettings:Port"]);
             smtpClient.Connect(host, port, MailKit.Security.SecureSocketOptions.StartTls);
-            smtpClient.Authenticate(emailAddress, _configuration["SmtpSettings:Password"]);
+            smtpClient.Authenticate(_configuration["SmtpSettings:Email"], _configuration["SmtpSettings:Password"]);
             await smtpClient.SendAsync(newEmail);
 
             smtpClient.Disconnect(true);

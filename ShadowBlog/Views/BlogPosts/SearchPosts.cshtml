@@ -5,6 +5,8 @@
 @using X.PagedList.Web.Common
 @model IPagedList<BlogPost>
 
+@inject IImageService _imageService
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -45,7 +47,7 @@
             {
                 <div class="col-lg-4 col-md-6">
                     <div class="thumb pb-lg-3 pb-5">
-                        <img class="w-100" src="~/img/BlogPostDefaultImage.jpg" alt="img">
+                        <img class="w-100" src="@_imageService.DecodeImage(blogPost.ImageData, blogPost.ImageType)" alt="img">
                     </div>
                     <div class="blog-post-item-wrap">
                         <div class="post-content">
